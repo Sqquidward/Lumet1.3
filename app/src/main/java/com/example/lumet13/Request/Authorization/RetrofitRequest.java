@@ -1,34 +1,38 @@
 package com.example.lumet13.Request.Authorization;
 
+
+
+
+
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.example.lumet13.Activity.Authorization.Registration;
-import com.example.lumet13.Activity.Authorization.validatePswrd;
-import com.example.lumet13.Request.Authorization.AnswerParametrs;
+import com.example.lumet13.Activity.Authorization.Listener;
+import com.example.lumet13.Activity.Maps.MapsAct;
 import com.example.lumet13.Request.Authorization.Models.Login;
 import com.example.lumet13.Request.Authorization.Models.Token;
 import com.example.lumet13.Request.Authorization.Models.User;
-import com.example.lumet13.Request.Authorization.ServInterface_reg;
 
 import java.io.EOFException;
 import java.io.IOException;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitRequest{
     String login;
     String password;
     String email;
     String password_token;
+    //
+    String token;
 
     Context Context;
     Retrofit retrofit = new Retrofit.Builder()
@@ -119,16 +123,24 @@ public class RetrofitRequest{
         });
     }
 
-    public void RequestAuthorization(){
+    public void RequestAuthorization(Listener listener){
         //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
 
         Call<ResponseBody> callAuthorization = service.Authorization(new Login(email, password));
         callAuthorization.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                System.out.println("Все заебись братан");
+                System.out.println(response.code());
+                if(response.code() == 200){
+                    try {
+                        token = "Bearer "+ response.body().string();
+                        RequestGetDataUser(token);
+                        listener.onFetchData("");
+                    } catch (IOException e) {
+                       e.printStackTrace();
+                    }}
+                else{
+                }
             }
 
             @Override
@@ -137,4 +149,41 @@ public class RetrofitRequest{
             }
         });
     }
+    public void RequestGetDataUser(String value){;
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request request = chain.request().newBuilder().addHeader("Authorization", value).build();
+                return chain.proceed(request);
+            }
+        });
+
+        Retrofit retrofitCustom = new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create()).baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build();
+        ServInterface_reg serviceC = retrofitCustom.create(ServInterface_reg.class);
+
+        Call<ResponseBody> callGetUser = serviceC.GetUser();
+        callGetUser.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    System.out.println("Body " + response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Body " + response.raw());
+                System.out.println("Headers " + response.headers());
+                System.out.println("Code " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                System.out.println("Oшибка  "+ t);
+            }
+        });
+    }
+
 }
+
+

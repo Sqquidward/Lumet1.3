@@ -53,9 +53,9 @@ class Registration : ComponentActivity() {
 
             Button(onClick = {
                // mainCheck(login = login, email = email, password = password, password_again = password_again)
-//                val i = Intent(Context, validatePswrd::class.java)
-//                i.putExtra("email", email)
-//                Context.startActivity(i)
+                val i = Intent(Context, validatePswrd::class.java)
+                i.putExtra("email", email)
+                Context.startActivity(i)
 
                 //println("$login, $email, $password, $password_again")
 

@@ -23,9 +23,13 @@ public interface ServInterface_reg {
     @POST("registration/email_confirmation")
     Call<ResponseBody> ValidatePassword(@Body Token token);
 
-    @Headers("Content-Type: application/json")
-    @GET("authorization")
+    //@Headers("Content-Type: application/json")
+    @POST("authorization")
     Call<ResponseBody> Authorization(@Body Login login);
+
+    //@Headers("Content-Type: application/json")
+    @GET("users/getUser")
+    Call<ResponseBody> GetUser();
 
     @GET("test")
     Call<ResponseBody> test();

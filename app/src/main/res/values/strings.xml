@@ -3,4 +3,9 @@
     <string name="title_activity_registration">Registration</string>
     <string name="title_activity_validate_pswrd">validatePswrd</string>
     <string name="title_activity_sign_up">SignUp</string>
+    <string name="title_activity_maps">Maps</string>
+    <string name="title_activity_setting">SettingAct</string>
+    <string name="title_activity_create_event">CreateEventAct</string>
+    <string name="title_activity_profile_event">ProfileEventAct</string>
+    <string name="title_activity_my_profile">MyProfileAct</string>
 </resources>
