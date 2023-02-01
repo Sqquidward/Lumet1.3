@@ -82,7 +82,7 @@ class Registration : ComponentActivity() {
             Button(onClick = {
                 Context.startActivity(Intent(Context, SignUp::class.java))
             },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0x7C88D4), contentColor = Color.White),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
 
                 modifier = Modifier
                     .padding(

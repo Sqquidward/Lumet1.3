@@ -1,6 +1,7 @@
 package com.example.lumet13.JCview
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
@@ -9,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.lumet13.R
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -43,11 +45,22 @@ fun TextField(label:String, verticalSize:Int, text:String, onTextChange: (String
 @Composable
 fun backgroung(){
 
-    Image(
-        modifier = Modifier,
-        bitmap = ImageBitmap.imageResource(R.drawable.background),
-        contentDescription = null
-    )
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(color = Color.DarkGray))
+
+
+
+    Box(
+        modifier = Modifier.fillMaxSize()){
+        Image(
+            modifier = Modifier,
+            contentScale = ContentScale.Crop,
+            bitmap = ImageBitmap.imageResource(R.drawable.background),
+            contentDescription = null
+        )
+    }
+
 
     Text(text = "Lumet",
         fontFamily = manrope,
@@ -56,7 +69,7 @@ fun backgroung(){
         maxLines = 1,
         fontSize = 56.sp,
         style = LocalTextStyle.current,
-        modifier = Modifier.padding(start = 151.dp, top = 131.dp)
+        modifier = Modifier.padding(start = 151.dp, top = 151.dp)
         //horizontal = 131.dp, vertical = 127.dp
     )
 

@@ -86,7 +86,7 @@ class SignUp : ComponentActivity() {
                 Context.startActivity(Intent(Context, Registration::class.java))
                 //mainCheck(login = login, email = email, password = password, password_again = password_again)
             },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0x7C88D4), contentColor = Color.White),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
 
                 modifier = Modifier
                     .padding(
