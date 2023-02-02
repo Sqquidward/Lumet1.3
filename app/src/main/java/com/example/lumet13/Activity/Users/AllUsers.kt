@@ -6,6 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.LazyColumn
@@ -34,35 +35,45 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.starDraw
 import com.example.lumet13.Activity.Maps.MapsAct
+import com.example.lumet13.Activity.Maps.userDTO
 import com.example.lumet13.Activity.Users.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
 import com.example.lumet13.Request.Retrofit.RequestListener
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import com.example.lumet13.db.DBHandler
 import com.google.android.gms.maps.model.MarkerOptions
 import lumetbackend.entities.EventDTO
 
+var usersList = mutableListOf<UserDTO>()
 class AllUsers : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        usersList = mutableListOf()
+        val dbHandler: DBHandler = DBHandler(this)
         val requestListener = object : RequestListener<List<UserDTO>> {
             override fun onFetchData(t: List<UserDTO>) {
-                TODO("Not yet implemented")
+
+                for( i in t){
+                    usersList.add(i)
+                }
+
+
+                setContent {
+                    MyApp()
+                }
             }
 
             override fun onError(message: String?) {
-                TODO("Not yet implemented")
+                println("Error")
             }
         }
 
         val req = RetrofitRequest()
-        req.RequestGetDataAllUsers("token", requestListener)
+        req.RequestGetDataAllUsers(dbHandler.readUsers()!![0].courseToken, requestListener)
 
-        setContent {
-            MyApp()
-        }
     }
 }
 
@@ -231,7 +242,7 @@ fun BarkHomeContent() {
 
 
 @Composable
-fun PuppyListItem(user: User) {
+fun PuppyListItem(user: UserDTO) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -245,8 +256,11 @@ fun PuppyListItem(user: User) {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxSize()
+                    .clickable {
+                        println("JHGJK")
+                    }
             ) {
-                Text(text = user.name,
+                Text(text = user.login!!,
                     fontSize = 18.sp,
                     color = androidx.compose.ui.graphics.Color.Black,
                     fontFamily = manrope,
@@ -263,7 +277,7 @@ fun PuppyListItem(user: User) {
                     contentDescription = null
                 )
 
-                if(user.privacity){
+                if(user.privacystatusChat == "ALL"){
                     Image(
                         modifier = Modifier
                             .padding(start = 290.dp)
@@ -273,7 +287,7 @@ fun PuppyListItem(user: User) {
                         contentDescription = null
                     )
                 }
-                for (i in 0..(user.rating-1)){
+                for (i in 0..((user.rating!!)/2-1)){
                     Image(
                         modifier = Modifier
                             .padding(start = 30.dp + (i * 11).dp, top = 21.dp)

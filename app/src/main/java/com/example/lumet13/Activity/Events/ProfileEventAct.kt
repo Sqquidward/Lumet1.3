@@ -27,21 +27,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.ui.theme.Lumet13Theme
 import com.example.lumet13.Activity.Maps.MapsAct
+import com.example.lumet13.Activity.Profile.userDTO
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
+import com.example.lumet13.db.DBHandler
+import lumetbackend.entities.EventDTO
 
 class ProfileEventAct : ComponentActivity() {
+
+    val dbHandler: DBHandler = DBHandler(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        var eventDTO = intent.getSerializableExtra("EventDTO") as EventDTO
         setContent {
-            ProfileEvent()
+            ProfileEvent(eventDTO)
         }
     }
 }
 
+
+
 var digit = R.drawable.apps
 @Composable
-fun ProfileEvent() {
+fun ProfileEvent(eventDTO:EventDTO) {
     var Context = LocalContext.current
     Button(
         onClick = {
@@ -77,7 +88,7 @@ fun ProfileEvent() {
 
 
     Text(
-        text = "Significant",
+        text = eventDTO.name!!,
         fontSize = 30.sp ,
         modifier = Modifier.padding(start = 160.dp, top = 70.dp),
         color = Color.Black,
@@ -95,7 +106,7 @@ fun ProfileEvent() {
     )
 
     Text(
-        text = "Running",
+        text = eventDTO.hobbytype!!,
         fontSize = 18.sp ,
         modifier = Modifier.padding(start = 190.dp, top = 112.dp),
         color = Color.DarkGray,
@@ -103,7 +114,7 @@ fun ProfileEvent() {
         fontWeight = FontWeight.Normal
     )
 
-    for (i in 0..4){
+    for (i in 0..eventDTO.userrating!!/2-1){
         starDraw(i*20, 138)
     }
 
@@ -189,8 +200,7 @@ fun ProfileEvent() {
     )
 
     Text(
-        text = "Sea esse deserunt ei, no diam ubique euripidis has. Mandamus abhorreant deseruisse mea at," +
-                " mea elit deserunt persequeris at, in putant fuisset honestatis qui. Sale liber et vel.",
+        text = eventDTO.description!!,
         fontSize = 18.sp ,
         modifier = Modifier.padding(start = 40.dp, top = 390.dp),
         color = Color.Black,

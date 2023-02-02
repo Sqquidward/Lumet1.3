@@ -57,6 +57,7 @@ class MapsAct : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val dbHandler: DBHandler = DBHandler(this)
 
 
 //         userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
@@ -73,7 +74,7 @@ class MapsAct : ComponentActivity() {
 
 
         val req = RetrofitRequest()
-        req.RequestGetDataEvents("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4aG9ja0B5YW5kZXgucnUiLCJleHAiOjE2NzY1ODEyMDB9.2ZsA6ZzfkpqpQhyHLidXzJXMggj1xYBZV7PRtGHYQLViMjtNTMutS8I05e6I8iciX9cw4sNpz5RzjPNB0Tg3qg", requestListener)
+        req.RequestGetDataEvents(dbHandler.readUsers()!![0].courseToken, requestListener)
 
         setContent {
             mainM()
