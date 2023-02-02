@@ -8,4 +8,4 @@ open class UserEvent(
     open var historyCreatedEvents: Array<Int>,
     open var participationEvents: Array<Int>,
     open var historyParticipationEvents: Array<Int>
-)
+):java.io.Serializable

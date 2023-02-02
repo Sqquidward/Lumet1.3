@@ -1,10 +1,5 @@
 package lumetbackend.entities
 
-
-
-
-
-
 class EventDTO(
     val id:Int,
     val userrating: Int?,

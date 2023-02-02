@@ -6,4 +6,4 @@ open class Friends(
     open var friendlist: Array<Int>,
     open var userRequests: Array<Int>,
     open var requestsToUser: Array<Int>
-)
+): java.io.Serializable

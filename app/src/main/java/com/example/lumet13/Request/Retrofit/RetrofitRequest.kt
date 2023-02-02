@@ -17,6 +17,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.EOFException
 import java.io.IOException
+import kotlin.collections.first as first
 
 class RetrofitRequest {
 //    var login: String? = null
@@ -105,10 +106,17 @@ class RetrofitRequest {
                         val token = response.body()!!.string()
                         println("Token   " +token )
                         val dbHandler: DBHandler = DBHandler(context);
+                        dbHandler.deleteCourse()
+
+
+
                         dbHandler.addNewUser(token)
 
+                        var list =  dbHandler.readUsers()
+                        println(dbHandler.readUsers()!![0].courseToken)
+
                         println(dbHandler.readUsers().toString())
-                   //     RequestGetDataUser(token, listener)
+                        RequestGetDataUser(token, listener)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }

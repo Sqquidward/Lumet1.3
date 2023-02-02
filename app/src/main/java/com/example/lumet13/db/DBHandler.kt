@@ -111,14 +111,14 @@ class DBHandler // creating a constructor for our database handler.
     }
 
     // on below line creating a function to delete course
-    fun deleteCourse(courseName: String) {
+    fun deleteCourse() {
         // on below line we are creating
         // a variable to write our database.
         val db = this.writableDatabase
 
         // on below line we are calling a method to delete our
         // course and we are comparing it with our course name.
-        db.delete(TABLE_NAME, "name=?", arrayOf(courseName))
+        db.delete(TABLE_NAME, null, null)
         db.close()
     }
 }

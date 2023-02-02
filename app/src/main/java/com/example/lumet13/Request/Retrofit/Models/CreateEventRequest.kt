@@ -12,4 +12,4 @@ class CreateEventRequest(
     val registrationSettings : String,
     val latitude : String,
     val longitude : String
-)
+): java.io.Serializable
