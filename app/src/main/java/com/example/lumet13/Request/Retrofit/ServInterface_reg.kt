@@ -47,6 +47,10 @@ interface ServInterface_reg {
         @Path("hobby") hobby: String
     ): Call<List<UserDTO>>
 
+    @GET("users/getUserById/{userId}")
+    fun getUserById(
+        @Path("userId") userId:Int,
+    ): Call<UserDTO>
 
 
 //change_user
@@ -97,13 +101,16 @@ interface ServInterface_reg {
         @Path("hobbytypeName") hobbytypeName:String
     ): Call<ResponseBody>
 
+
+
+
 //Events
     @GET("events/get_All_events")
     fun GetEvents(): Call<List<EventDTO>>
 
 
     @POST("events/create_event")
-    fun changeHobbyType(@Body createEventRequest: CreateEventRequest): Call<ResponseBody>
+    fun changeEventHobbyType(@Body createEventRequest: CreateEventRequest): Call<ResponseBody>
 
     @POST("events/remove_event/{eventId}")
     fun removeEvent(
@@ -172,6 +179,33 @@ interface ServInterface_reg {
 
     @POST("users/users_interaction/remove_from_friends/{userId}")
     fun removeFromFriends(
+        @Path("userId") userId:Int
+    ): Call<ResponseBody>
+
+
+//      Вlacklist
+
+    @POST("users/users_interaction/add_to_blacklist/{userId}")
+    fun addToBlacklist(
+        @Path("userId") userId:Int
+    ): Call<ResponseBody>
+
+    @POST("users/users_interaction/delete_frome_blacklist/{userId}")
+    fun deleteFromeBlacklist(
+        @Path("userId") userId:Int
+    ): Call<ResponseBody>
+
+
+//      Rating
+
+    @POST("users/users_interaction/give_feedback/{userId}/{feedback}")
+    fun giveFeedback(
+        @Path("userId") userId:Int,
+        @Path("feedback") feedback:Int
+    ): Call<ResponseBody>
+
+    @POST("users/users_interaction/cancel_feedback/{userId}")
+    fun cancelFeedback(
         @Path("userId") userId:Int
     ): Call<ResponseBody>
 

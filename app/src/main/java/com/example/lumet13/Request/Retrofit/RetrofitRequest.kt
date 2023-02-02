@@ -15,6 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Path
 import java.io.EOFException
 import java.io.IOException
 import kotlin.collections.first as first
@@ -47,7 +48,7 @@ class RetrofitRequest {
 
 
 
-//    хули надо?
+
     @Throws(EOFException::class)
     fun RequestRegister(login: String?, password: String, email: String) {
 
@@ -66,11 +67,6 @@ class RetrofitRequest {
                 //Intent i = new Intent(Context, validatePswrd.class);
                 //i.putExtra("email", email);
                 //Context.startActivity(i);
-                if (flag) {
-                    println("Все заебись братан")
-                } else {
-                    println("Где то ошибка братан")
-                }
             }
 
             override fun onFailure(call: Call<ResponseBody?>, t: Throwable) {
@@ -83,7 +79,7 @@ class RetrofitRequest {
         val callValToken = service.ValidatePassword(Token(email, password))
         callValToken.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                println("Все заебись братан   " + response.body() + "Тута")
+
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {}
@@ -92,7 +88,6 @@ class RetrofitRequest {
 
 
 
-     //kjsdfhgkjhsvkjh
     fun RequestAuthorization(context: Context, listener: RequestListener<UserDTO>, email: String, password: String) {
         //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         val callAuthorization = service.Authorization(Login(email, password))
@@ -161,13 +156,11 @@ class RetrofitRequest {
     }
 
 
-
-
     fun RequestGetDataAllUsers(token: String?, listener: RequestListener<List<UserDTO>>) {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
-            val request = chain.request().newBuilder().addHeader("Authorization", token).build()
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
             chain.proceed(request)
         }
         val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
@@ -197,7 +190,7 @@ class RetrofitRequest {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
-            val request = chain.request().newBuilder().addHeader("Authorization", token).build()
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
             chain.proceed(request)
         }
         val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
@@ -223,6 +216,128 @@ class RetrofitRequest {
     }
 
 
+    fun RequestGetALLUsersSort(token: String?, listener: RequestListener<List<UserDTO>>, search:String, min_age:Int, rating: Int, hobby: String) {
+
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
+            chain.proceed(request)
+        }
+        val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build()
+        val serviceC = retrofitCustom.create(
+            ServInterface_reg::class.java
+        )
+
+        val callGetUser = serviceC.GetALLUsersSort(search, min_age, rating, hobby)
+        callGetUser.enqueue(object : Callback<List<UserDTO>> {
+            override fun onResponse(call: Call<List<UserDTO>>, response: Response<List<UserDTO>>) {
+                try {
+                    listener.onFetchData(response.body()!!)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(call: Call<List<UserDTO>>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+    }
+
+    fun RequestGetUserById(token: String?, listener: RequestListener<UserDTO>, userId : Int) {
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
+            chain.proceed(request)
+        }
+        val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build()
+        val serviceC = retrofitCustom.create(
+            ServInterface_reg::class.java
+        )
+        val callGetUser = serviceC.getUserById(userId)
+        callGetUser.enqueue(object : Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                try {
+                    listener.onFetchData(response.body()!!)
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+    }
+
+// Change User
+
+    fun RequestChangeLogin(token: String?, login : String, age :String) {
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
+            chain.proceed(request)
+        }
+        val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build()
+        val serviceC = retrofitCustom.create(
+            ServInterface_reg::class.java
+        )
+        val calllogin = serviceC.changeLogin(login)
+        calllogin.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                try {
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+
+        val callage= serviceC.changeAge(age)
+        callage.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                try {
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+    }
+
+    fun RequestChangeLogin(token: String?, hobbytypeName:String) {
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
+            chain.proceed(request)
+        }
+        val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build()
+        val serviceC = retrofitCustom.create(
+            ServInterface_reg::class.java
+        )
+        val call = serviceC.changeHobbyType(hobbytypeName)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                try {
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+
+
+    }
 
 //    Events
 
@@ -230,7 +345,7 @@ class RetrofitRequest {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
-            val request = chain.request().newBuilder().addHeader("Authorization", token).build()
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
             chain.proceed(request)
         }
         val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
