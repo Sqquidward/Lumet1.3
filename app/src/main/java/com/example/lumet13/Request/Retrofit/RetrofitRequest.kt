@@ -87,7 +87,6 @@ class RetrofitRequest {
     }
 
 
-
     fun RequestAuthorization(context: Context, listener: RequestListener<UserDTO>, email: String, password: String) {
         //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         val callAuthorization = service.Authorization(Login(email, password))

@@ -73,7 +73,7 @@ class MapsAct : ComponentActivity() {
 
 
         val req = RetrofitRequest()
-        req.RequestGetDataEvents("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4aG9ja0B5YW5kZXgucnUiLCJleHAiOjE2NzY1ODEyMDB9.2ZsA6ZzfkpqpQhyHLidXzJXMggj1xYBZV7PRtGHYQLViMjtNTMutS8I05e6I8iciX9cw4sNpz5RzjPNB0Tg3qg", requestListener)
+        req.RequestGetDataEvents("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4aG9ja0B5YW5kZXgucnUiLCJleHAiOjE2NzY1ODEyMDB9.2ZsA6ZzfkpqpQhyHLidXzJXMggj1xYBZV7PRtGHYQLViMjtNTMutS8I05e6I8iciX9cw4sNpz5RzjPNB0Tg3qg", requestListener)
 
         setContent {
             mainM()
@@ -371,7 +371,15 @@ fun mainSod(animated:Boolean) {
     )
 
     for (i in 0..4){
-        starDraw(i*20, 578)
+        Image(
+            modifier = Modifier
+                .padding(start = 161.dp + (i*20).dp, top = 578.dp)
+                .size(18.dp)
+                .alpha(alpha),
+            bitmap = ImageBitmap.imageResource(R.drawable.star_black),
+            alignment = Alignment.BottomEnd,
+            contentDescription = null
+        )
     }
 
 

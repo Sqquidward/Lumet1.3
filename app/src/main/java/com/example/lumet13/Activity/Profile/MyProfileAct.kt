@@ -6,18 +6,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.modifier.ModifierLocalProvider
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.starDraw
 import com.example.lumet13.Activity.Maps.MapsAct
+import com.example.lumet13.Activity.Profile.MyFriends.MyFriendsAct
 import com.example.lumet13.Activity.Profile.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
@@ -37,7 +38,7 @@ class MyProfileAct : ComponentActivity() {
         super.onCreate(savedInstanceState)
         userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
         setContent {
-            maindd()
+            mainProfile()
         }
     }
 }
@@ -46,8 +47,10 @@ class MyProfileAct : ComponentActivity() {
 
 
 @Composable
-fun maindd(){
+fun mainProfile(){
+
     var Context = LocalContext.current
+    var openDialog = remember { mutableStateOf(false) }
     Button(
         onClick = {
             Context.startActivity(
@@ -102,7 +105,11 @@ fun maindd(){
 
 
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {
+            Context.startActivity(
+                Intent(Context, MyFriendsAct::class.java)
+            )
+        },
         colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
         modifier = Modifier
             .padding(start = 40.dp, top = 370.dp, end = 40.dp, bottom = 5.dp)
@@ -166,96 +173,173 @@ fun maindd(){
                 fontWeight = FontWeight.W600
             )
 
-            Text(text = "13",
-                fontSize = 17.sp ,
-                modifier = Modifier.padding(start = 255.dp, top = 6.dp),
-                color = Color.Black,
-                fontFamily = manrope,
-                fontWeight = FontWeight.W600)
+        }
+    }
+
+        Button(
+            onClick = { openDialog.value = true },
+            colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
+            modifier = Modifier
+                .padding(start = 220.dp, top = 430.dp, end = 40.dp, bottom = 5.dp)
+                .size(width = 170.dp, height = 50.dp),
+            shape = RoundedCornerShape(30),
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Image(
+                    modifier = Modifier
+                        .padding(start = 0.dp, top = 7.dp)
+                        .size(22.dp),
+                    bitmap = ImageBitmap.imageResource(R.drawable.icon_hobby),
+
+                    contentDescription = null
+                )
+
+                Text(
+                    text = " Hobby",
+                    fontSize = 17.sp ,
+                    modifier = Modifier.padding(start = 30.dp, top = 6.dp),
+                    color = Color.Black,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.W600
+                )
+
+                Text(text = "13",
+                    fontSize = 17.sp ,
+                    modifier = Modifier.padding(start = 255.dp, top = 6.dp),
+                    color = Color.Black,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.W600)
+            }
+
+
+        }
+
+        if (openDialog.value) {
+            AlertDialog(
+                onDismissRequest = {
+                    openDialog.value = false
+                },
+                modifier = Modifier.size(width = 200.dp, height = 400.dp),
+                title = {  },
+                text = {
+                    Box(modifier = Modifier.fillMaxSize()){
+                        Text(text = "Choose your hooby", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
+                        Column(modifier = Modifier.padding(top = 30.dp)){
+                            Box(
+
+                            ){
+                                Text(text = "Text 1",
+                                    fontSize = 16.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.Black,
+                                    modifier = Modifier.clickable(onClick = {
+                                        openDialog.value = false
+                                    }))
+
+                            }
+                            Box(
+                                modifier = Modifier.padding(top = 7.dp)
+                            ){
+                                Text(text = "Text 2",
+                                    fontSize = 16.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.Black,
+                                    modifier = Modifier.clickable(onClick = {
+                                        openDialog.value = false
+                                    }))
+
+                            }
+                            Box(
+                                modifier = Modifier.padding(top = 7.dp)
+                            ){
+                                Text(text = "Text 3",
+                                    fontSize = 16.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.Black,
+                                    modifier = Modifier.clickable(onClick = {
+                                        openDialog.value = false
+                                    }))
+
+                            }
+                            Box(
+                                modifier = Modifier.padding(top = 7.dp)
+                            ){
+                                Text(text = "Text 4",
+                                    fontSize = 16.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.Black,
+                                    modifier = Modifier.clickable(onClick = {
+                                        openDialog.value = false
+                                    }))
+
+                            }
+                            Box(
+                                modifier = Modifier.padding(top = 7.dp)
+                            ){
+                                Text(text = "Text 5",
+                                    fontSize = 16.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = Color.Black,
+                                    modifier = Modifier.clickable(onClick = {
+                                        openDialog.value = false
+                                    }))
+
+                            }
+
+
+                        }
+                    }
+                },
+                buttons = {
+                }
+            )
         }
 
 
-    }
+        Box(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 200.dp)
+                .size(width = 100.dp, height = 150.dp)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(color = Color.Black)
+        )
 
-    Button(
-        onClick = { /*TODO*/ },
-        colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
-        modifier = Modifier
-            .padding(start = 220.dp, top = 430.dp, end = 40.dp, bottom = 5.dp)
-            .size(width = 170.dp, height = 50.dp),
-        shape = RoundedCornerShape(30),
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Image(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 7.dp)
-                    .size(22.dp),
-                bitmap = ImageBitmap.imageResource(R.drawable.icon_hobby),
+        Box(
+            modifier = Modifier
+                .padding(start = 150.dp, top = 200.dp)
+                .size(width = 130.dp, height = 150.dp)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(color = Color.Black)
+        )
 
-                contentDescription = null
-            )
-
-            Text(
-                text = " Hobby",
-                fontSize = 17.sp ,
-                modifier = Modifier.padding(start = 30.dp, top = 6.dp),
-                color = Color.Black,
-                fontFamily = manrope,
-                fontWeight = FontWeight.W600
-            )
-
-            Text(text = "13",
-                fontSize = 17.sp ,
-                modifier = Modifier.padding(start = 255.dp, top = 6.dp),
-                color = Color.Black,
-                fontFamily = manrope,
-                fontWeight = FontWeight.W600)
-        }
+        Box(
+            modifier = Modifier
+                .padding(start = 290.dp, top = 200.dp)
+                .size(width = 70.dp, height = 150.dp)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(color = Color.Black)
+        )
 
 
-    }
-
-    Box(
-        modifier = Modifier
-            .padding(start = 40.dp, top = 200.dp)
-            .size(width = 100.dp, height = 150.dp)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(color = Color.Black)
-    )
-
-    Box(
-        modifier = Modifier
-            .padding(start = 150.dp, top = 200.dp)
-            .size(width = 130.dp, height = 150.dp)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(color = Color.Black)
-    )
-
-    Box(
-        modifier = Modifier
-            .padding(start = 290.dp, top = 200.dp)
-            .size(width = 70.dp, height = 150.dp)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(color = Color.Black)
-    )
-
-
-    Box(
-        modifier = Modifier
-            .padding(start = 40.dp, top = 500.dp, end = 40.dp)
-            .size(width = 400.dp, height = 15.dp)
-            .clip(shape = RoundedCornerShape(20.dp))
-            .background(color = Color(R.color.whitegrey))
-    )
-
-
+        Box(
+            modifier = Modifier
+                .padding(start = 40.dp, top = 500.dp, end = 40.dp)
+                .size(width = 400.dp, height = 15.dp)
+                .clip(shape = RoundedCornerShape(20.dp))
+                .background(color = Color(R.color.whitegrey))
+        )
 
     post()
 
 }
 
 @Composable
-fun post(){
+fun post() {
     Image(
         modifier = Modifier
             .padding(start = 40.dp, top = 555.dp)
@@ -267,7 +351,7 @@ fun post(){
 
     Text(
         text = "Mike",
-        fontSize = 24.sp ,
+        fontSize = 24.sp,
         modifier = Modifier.padding(start = 113.dp, top = 557.dp),
         color = Color.Black,
         fontFamily = manrope,
@@ -276,7 +360,7 @@ fun post(){
 
     Text(
         text = "15 November, 2022",
-        fontSize = 15.sp ,
+        fontSize = 15.sp,
         modifier = Modifier.padding(start = 113.dp, top = 587.dp),
         color = Color.Black,
         fontFamily = manrope,
@@ -290,5 +374,10 @@ fun post(){
             .clip(shape = RoundedCornerShape(20.dp))
             .background(color = Color.Black)
     )
+
 }
+
+
+
+
 
