@@ -1,4 +1,4 @@
-package com.example.lumet13.Request.Authorization.Models;
+package com.example.lumet13.Request.Retrofit.Models;
 
 
 public class User {

@@ -21,8 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.JCview.TextField
 import com.example.lumet13.JCview.backgroung
-import com.example.lumet13.Request.Authorization.RetrofitRequest
-
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
 class validatePswrd : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +36,8 @@ class validatePswrd : ComponentActivity() {
             val email = intent.getStringExtra("email")
 
             Button(onClick = {
-                val objec = RetrofitRequest(email, token)
-                objec.RequestValidatePassword()
+                val objec = RetrofitRequest()
+                objec.RequestValidatePassword(email!!, token)
                 //println("$login, $email, $password, $password_again")
                 //Context.startActivity(Intent(Context, Registration::class.java))
                 //mainCheck(login = login, email = email, password = password, password_again = password_again)

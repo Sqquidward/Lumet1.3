@@ -32,10 +32,28 @@ import com.example.lumet13.Activity.Users.User
 import com.example.lumet13.Activity.Users.usersList
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
+import com.example.lumet13.Request.Retrofit.RequestListener
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import lumetbackend.entities.EventDTO
 
 class AllEvents : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val requestListener = object : RequestListener<List<EventDTO>?> {
+            override fun onFetchData(t: List<EventDTO>?) {
+                println("test")
+            }
+
+            override fun onError(message: String?) {
+                println("test")
+            }
+        }
+
+        val req = RetrofitRequest()
+        req.RequestGetDataEvents("token", requestListener)
+
         setContent {
             MyAllEvent()
         }

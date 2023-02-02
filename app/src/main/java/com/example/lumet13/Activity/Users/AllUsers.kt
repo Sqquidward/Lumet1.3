@@ -37,11 +37,29 @@ import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Activity.Users.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
+import com.example.lumet13.Request.Retrofit.RequestListener
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
 import com.google.android.gms.maps.model.MarkerOptions
+import lumetbackend.entities.EventDTO
 
 class AllUsers : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val requestListener = object : RequestListener<List<UserDTO>> {
+            override fun onFetchData(t: List<UserDTO>) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onError(message: String?) {
+                TODO("Not yet implemented")
+            }
+        }
+
+        val req = RetrofitRequest()
+        req.RequestGetDataAllUsers("token", requestListener)
+
         setContent {
             MyApp()
         }

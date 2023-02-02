@@ -1,4 +1,4 @@
-package com.example.lumet13.Request.Authorization
+package com.example.lumet13.Request.Retrofit
 
 class AnswerParametrs(var code:Int){
     fun Check(): Boolean {

@@ -29,10 +29,13 @@ import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Activity.Profile.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
 
+var userDTO  = UserDTO()
 class MyProfileAct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
         setContent {
             maindd()
         }

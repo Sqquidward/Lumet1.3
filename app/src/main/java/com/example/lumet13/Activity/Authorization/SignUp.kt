@@ -1,6 +1,5 @@
 package com.example.lumet13.Activity.Authorization
 
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -24,14 +23,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lumet13.Activity.Events.CreateEventAct
 import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Activity.Profile.MyProfileAct
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.JCview.TextField
 import com.example.lumet13.JCview.backgroung
-import com.example.lumet13.Request.Authorization.RetrofitRequest
-
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
+import com.example.lumet13.Request.Retrofit.RequestListener
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
 
 class SignUp : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +45,15 @@ class SignUp : ComponentActivity() {
             TextField(label = "Password", verticalSize = 281, text = password, onTextChange = {password = it})
 
 
-            val auth_listener: Listener = object : Listener {
-                override fun onFetchData(message: String?) {
-                    Context.startActivity(
-                        Intent(Context, MapsAct::class.java)
-                    )
+            val auth_listener: RequestListener<UserDTO> = object : RequestListener<UserDTO> {
+                override fun onFetchData(t: UserDTO) {
+                    val intent = Intent(Context, MapsAct::class.java).apply { putExtra("UserDTO", t) }
+//                    intent.putExtra("UserDTO", t)
+                    startActivity(intent)
+
+//                    Context.startActivity(
+//                        Intent(Context, MapsAct::class.java))
+
                 }
 
                 override fun onError(message: String?) {
@@ -61,8 +64,8 @@ class SignUp : ComponentActivity() {
 
             Button(onClick = {
 
-                val obj = RetrofitRequest(email, password)
-                obj.RequestAuthorization(auth_listener)
+                val obj = RetrofitRequest()
+                obj.RequestAuthorization(auth_listener, email, password)
 
             },
 

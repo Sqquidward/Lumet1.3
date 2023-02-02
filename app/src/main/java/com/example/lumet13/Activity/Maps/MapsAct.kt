@@ -8,7 +8,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,12 +29,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lumet13.Activity.Events.*
+import com.example.lumet13.Activity.Events.AllEvents
+import com.example.lumet13.Activity.Events.CreateEventAct
+import com.example.lumet13.Activity.Events.ProfileEventAct
+import com.example.lumet13.Activity.Events.starDraw
 import com.example.lumet13.Activity.Profile.MyProfileAct
 import com.example.lumet13.Activity.Setting.SettingAct
 import com.example.lumet13.Activity.Users.AllUsers
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
+import com.example.lumet13.Request.Retrofit.RequestListener
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -43,20 +48,38 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
-
 import kotlinx.coroutines.launch
-
+import lumetbackend.entities.EventDTO
+var userDTO  = UserDTO()
 class MapsAct : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+//         userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
+
+        val requestListener = object : RequestListener<List<EventDTO>?>{
+            override fun onFetchData(t: List<EventDTO>?) {
+                println("test")
+            }
+
+            override fun onError(message: String?) {
+                println("test")
+            }
+        }
+
+
+        val req = RetrofitRequest()
+        req.RequestGetDataEvents("Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbGV4aG9ja0B5YW5kZXgucnUiLCJleHAiOjE2NzY1ODEyMDB9.2ZsA6ZzfkpqpQhyHLidXzJXMggj1xYBZV7PRtGHYQLViMjtNTMutS8I05e6I8iciX9cw4sNpz5RzjPNB0Tg3qg", requestListener)
+
         setContent {
             mainM()
         }
     }
+
+
 }
-
-
-
 
 
 @Composable
@@ -92,7 +115,7 @@ fun mainM(){
                         .padding(start = 125.dp, top = 48.dp)
                         .clickable(onClick = {
                             Context.startActivity(
-                                Intent(Context, MyProfileAct::class.java)
+                                Intent(Context, MyProfileAct::class.java).apply { putExtra("UserDTO", userDTO) }
                             )
                         })
 
@@ -101,11 +124,13 @@ fun mainM(){
                 Text(
                     text = "Meetings",
                     fontSize = 22.sp,
-                    modifier = Modifier.padding(start = 70.dp, top = 150.dp).clickable(onClick = {
-                        Context.startActivity(
-                            Intent(Context, AllEvents::class.java)
-                        )
-                    }),
+                    modifier = Modifier
+                        .padding(start = 70.dp, top = 150.dp)
+                        .clickable(onClick = {
+                            Context.startActivity(
+                                Intent(Context, AllEvents::class.java)
+                            )
+                        }),
                     color = Color.White,
                     fontFamily = manrope,
                     fontWeight = FontWeight.SemiBold
@@ -139,10 +164,10 @@ fun mainM(){
                     modifier = Modifier
                         .padding(start = 70.dp, top = 370.dp)
                         .clickable(onClick = {
-                        Context.startActivity(
-                            Intent(Context, AllUsers::class.java)
-                        )
-                    }),
+                            Context.startActivity(
+                                Intent(Context, AllUsers::class.java)
+                            )
+                        }),
                     color = Color.White,
                     fontFamily = manrope,
                     fontWeight = FontWeight.SemiBold
@@ -229,6 +254,9 @@ fun mainM(){
 
 
 }
+
+
+
 
 
 @Composable
@@ -328,7 +356,9 @@ fun mainSod(animated:Boolean) {
     Text(
         text = "Running",
         fontSize = 18.sp ,
-        modifier = Modifier.padding(start = 190.dp, top = 552.dp).alpha(alpha),
+        modifier = Modifier
+            .padding(start = 190.dp, top = 552.dp)
+            .alpha(alpha),
         color = Color.DarkGray,
         fontFamily = manrope,
         fontWeight = FontWeight.Normal
@@ -387,7 +417,9 @@ fun mainSod(animated:Boolean) {
     Text(
         text = "Moscow, Mokhovaya street, 15/1s1",
         fontSize = 19.sp ,
-        modifier = Modifier.padding(start = 40.dp, top = 710.dp).alpha(alpha),
+        modifier = Modifier
+            .padding(start = 40.dp, top = 710.dp)
+            .alpha(alpha),
         color = Color(R.color.whitegrey),
         fontFamily = manrope,
         fontWeight = FontWeight.W600
