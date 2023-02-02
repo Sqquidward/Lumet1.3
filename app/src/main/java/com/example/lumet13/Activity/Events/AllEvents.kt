@@ -51,8 +51,7 @@ class AllEvents : ComponentActivity() {
             }
         }
 
-        val req = RetrofitRequest()
-        req.RequestGetDataEvents("token", requestListener)
+
 
         setContent {
             MyAllEvent()

@@ -1,10 +1,12 @@
 package com.example.lumet13.Request.Retrofit
 
 import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 import com.example.lumet13.Request.Retrofit.Models.Login
 import com.example.lumet13.Request.Retrofit.Models.Token
 import com.example.lumet13.Request.Retrofit.Models.User
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
+import com.example.lumet13.db.DBHandler
 import lumetbackend.entities.EventDTO
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -90,18 +92,23 @@ class RetrofitRequest {
 
 
      //kjsdfhgkjhsvkjh
-    fun RequestAuthorization(listener: RequestListener<UserDTO>, email: String, password: String) {
+    fun RequestAuthorization(context: Context, listener: RequestListener<UserDTO>, email: String, password: String) {
         //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         val callAuthorization = service.Authorization(Login(email, password))
 
 
-        callAuthorization.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        callAuthorization.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 println(response.code())
                 if (response.code() == 200) {
                     try {
-                        val token = "Bearer " + response.body()!!
-                        RequestGetDataUser(token, listener)
+                        val token = response.body()!!.string()
+                        println("Token   " +token )
+                        val dbHandler: DBHandler = DBHandler(context);
+                        dbHandler.addNewUser(token)
+
+                        println(dbHandler.readUsers().toString())
+                   //     RequestGetDataUser(token, listener)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -110,7 +117,7 @@ class RetrofitRequest {
             }
 
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 println("Oшибка  $t")
             }
         })
@@ -121,7 +128,7 @@ class RetrofitRequest {
     fun RequestGetDataUser(token: String?, listener: RequestListener<UserDTO>) {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
-            val request = chain.request().newBuilder().addHeader("Authorization", token).build()
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
             chain.proceed(request)
         }
         val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())

@@ -16,8 +16,6 @@ class DBHandler // creating a constructor for our database handler.
         // setting our column names along with their data types.
         val query = ("CREATE TABLE " + TABLE_NAME + " ("
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NAME_COL + " TEXT,"
-                + AGE_COL + " TEXT,"
                 + TOKEN_COL + " TEXT)")
 
         // at last we are calling a exec sql method to execute above sql query
@@ -26,9 +24,7 @@ class DBHandler // creating a constructor for our database handler.
 
     // this method is use to add new course to our sqlite database.
     fun addNewUser(
-        courseName: String?,
-        courseAge: String?,
-        courseToken: String?,
+        courseToken: String,
 
         ) {
 
@@ -36,8 +32,6 @@ class DBHandler // creating a constructor for our database handler.
 
         val values = ContentValues()
 
-        values.put(NAME_COL, courseName)
-        values.put(AGE_COL, courseAge)
         values.put(TOKEN_COL, courseToken)
 
         db.insert(TABLE_NAME, null, values)
@@ -57,12 +51,11 @@ class DBHandler // creating a constructor for our database handler.
         private const val DB_VERSION = 1
 
         private const val TABLE_NAME = "mycourses"
-
         private const val ID_COL = "id"
 
-        private const val NAME_COL = "name"
+     //   private const val NAME_COL = "name"
 
-        private const val AGE_COL = "age"
+            //private const val AGE_COL = "age"
 
         private const val TOKEN_COL = "token"
 
@@ -85,14 +78,7 @@ class DBHandler // creating a constructor for our database handler.
                 // on below line we are adding the data from cursor to our array list.
                 courseModelArrayList.add(
                     userModel(
-                        cursorCourses.getString(1),
-                        cursorCourses.getString(2),
-                        cursorCourses.getString(3),
-                        cursorCourses.getString(4),
-                        cursorCourses.getString(5),
-                        cursorCourses.getString(6),
-                        cursorCourses.getString(7),
-                        cursorCourses.getString(8)
+                        cursorCourses.getString(1)
                     )
                 )
             } while (cursorCourses.moveToNext())
@@ -114,8 +100,6 @@ class DBHandler // creating a constructor for our database handler.
 
         // on below line we are passing all values
         // along with its key and value pair.
-        values.put(NAME_COL, courseName)
-        values.put(AGE_COL, courseAge)
         values.put(TOKEN_COL, courseToken)
 
         // on below line we are calling a update method to update

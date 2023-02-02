@@ -65,7 +65,7 @@ class SignUp : ComponentActivity() {
             Button(onClick = {
 
                 val obj = RetrofitRequest()
-                obj.RequestAuthorization(auth_listener, email, password)
+                obj.RequestAuthorization(Context, auth_listener, email, password)
 
             },
 

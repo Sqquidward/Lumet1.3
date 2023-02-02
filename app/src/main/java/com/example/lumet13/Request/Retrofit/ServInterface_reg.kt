@@ -24,7 +24,7 @@ interface ServInterface_reg {
 
     //@Headers("Content-Type: application/json")
     @POST("authorization")
-    fun Authorization(@Body login: Login?): Call<String>
+    fun Authorization(@Body login: Login?): Call<ResponseBody>
 
     //@Headers("Content-Type: application/json")
 

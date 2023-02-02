@@ -2,6 +2,7 @@ package com.example.lumet13.Activity.Maps
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.animateDpAsState
@@ -41,6 +42,7 @@ import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
 import com.example.lumet13.Request.Retrofit.RequestListener
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import com.example.lumet13.db.DBHandler
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -189,6 +191,10 @@ fun mainM(){
 
                 )
 
+
+                val dbHandler: DBHandler = DBHandler(Context);
+                //RequestGetDataUser(token, listener)
+                Toast.makeText(Context, dbHandler.readUsers().toString(), Toast.LENGTH_SHORT).show()
                 Image(
                     modifier = Modifier
                         .size(105.dp)
