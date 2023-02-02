@@ -1,11 +1,13 @@
 package com.example.lumet13.Activity.Events
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,34 +30,53 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Maps.MapsAct
-import com.example.lumet13.Activity.Users.User
-import com.example.lumet13.Activity.Users.usersList
+import com.example.lumet13.Activity.Maps.userDTO
+import com.example.lumet13.Activity.Profile.MyProfileAct
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
-import com.example.lumet13.Request.Retrofit.Models.UserDTO
 import com.example.lumet13.Request.Retrofit.RequestListener
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import com.example.lumet13.db.DBHandler
 import lumetbackend.entities.EventDTO
+
+var eventList = mutableListOf<EventDTO>()
+var requestListener = object : RequestListener<List<EventDTO>?> {
+    override fun onFetchData(t: List<EventDTO>?) {
+        println("test")
+    }
+    override fun onError(message: String?) {
+        println("test")
+    }
+}
 
 class AllEvents : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        eventList = mutableListOf()
+        val dbHandler: DBHandler = DBHandler(this)
 
-        val requestListener = object : RequestListener<List<EventDTO>?> {
+
+         requestListener = object : RequestListener<List<EventDTO>?> {
             override fun onFetchData(t: List<EventDTO>?) {
-                println("test")
+
+                for (i in t!!){
+                    eventList.add(i)
+                }
+
+                setContent {
+                    MyAllEvent()
+                }
             }
 
             override fun onError(message: String?) {
-                println("test")
+                println("Error")
             }
         }
 
+        val req = RetrofitRequest()
+        req.RequestGetDataEvents(dbHandler.readUsers()!![0].courseToken, requestListener)
 
 
-        setContent {
-            MyAllEvent()
-        }
     }
 }
 
@@ -68,6 +89,7 @@ fun MyAllEvent() {
 
             Button(
                 onClick = {
+
                     Context.startActivity(
                         Intent(Context, MapsAct::class.java)
                     )
@@ -121,7 +143,10 @@ fun MyAllEvent() {
                     text = { Text("И тут тоже") },
                     buttons = {
                         Button(
-                            onClick = { openDialog.value = false }
+                            onClick = { openDialog.value = false
+
+
+                            }
                         ) {
                             Text("OK да", fontSize = 22.sp)
                         }
@@ -169,7 +194,7 @@ fun MyAllEvent() {
                 .background(color = Color(R.color.whitegrey))
         ){
             Text(
-                text = evetsList.size.toString() + " new events",
+                text = eventList.size.toString() + "events",
                 fontSize = 11.sp ,
                 modifier = Modifier.padding(start = 15.dp, top = 4.dp),
                 color = Color.White,
@@ -182,7 +207,7 @@ fun MyAllEvent() {
         Box(){
             Scaffold(
                 content = {
-                    ContentEvent()
+                    ContentEvent(Context)
                 }
             )
         }
@@ -209,22 +234,22 @@ fun MyAllEvent() {
 }
 
 @Composable
-fun ContentEvent() {
-    val event = remember { evetsList }
+fun ContentEvent(context: Context) {
+    val event = remember { eventList }
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
         items(
             items = event,
             itemContent = {
-                EventListItem(event = it)
+                EventListItem(event = it, context)
             })
     }
 }
 
 
 @Composable
-fun EventListItem(event: Event) {
+fun EventListItem(event: EventDTO, context: Context) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -237,8 +262,13 @@ fun EventListItem(event: Event) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .clickable {
+                    context.startActivity(
+                        Intent(context, ProfileEventAct::class.java).apply { putExtra("EventDTO", event) }
+                    )
+                }
         ) {
-            Text(text = event.name,
+            Text(text = event.name!!,
                 fontSize = 17.sp,
                 color = Color.Black,
                 fontFamily = manrope,
@@ -246,7 +276,7 @@ fun EventListItem(event: Event) {
                 modifier = Modifier.padding(start = 60.dp, top = 10.dp)
             )
 
-            Text(text = event.age.toString() + "+",
+            Text(text = event.desiredage.toString()+ "+",
                 fontSize = 13.sp,
                 color = Color.Black,
                 fontFamily = manrope,
@@ -258,12 +288,13 @@ fun EventListItem(event: Event) {
 
                 bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 10.dp).size(35.dp),
+                    .padding(start = 10.dp, top = 10.dp)
+                    .size(35.dp),
                 alignment = Alignment.BottomEnd,
                 contentDescription = null
             )
 
-            if(event.privacy){
+            if(true){
                 Image(
                     modifier = Modifier
                         .padding(start = 290.dp, top = 10.dp)
