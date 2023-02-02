@@ -42,6 +42,9 @@ class RetrofitRequest {
 //        password = _password
 //    }
 
+
+
+//    хули надо?
     @Throws(EOFException::class)
     fun RequestRegister(login: String?, password: String, email: String) {
 
