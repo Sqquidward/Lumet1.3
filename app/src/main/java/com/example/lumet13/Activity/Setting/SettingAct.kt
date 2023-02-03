@@ -6,15 +6,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,12 +24,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
 
 class SettingAct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +46,7 @@ class SettingAct : ComponentActivity() {
 @Composable
 fun SettingActiv(){
     var Context = LocalContext.current
-    var openDialog = remember { mutableStateOf(false) }
+    var openDialogChangeEmail = remember { mutableStateOf(false) }
     Button(
         onClick = {
             Context.startActivity(
@@ -91,8 +94,9 @@ fun SettingActiv(){
 
 
 
+
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {  openDialogChangeEmail.value = true},
         colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
         modifier = Modifier
             .padding(start = 40.dp, top = 80.dp, end = 40.dp, bottom = 5.dp)
@@ -276,6 +280,84 @@ fun SettingActiv(){
 
 
         }
+    }
+
+
+    if (openDialogChangeEmail.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialogChangeEmail.value = false
+            },
+            modifier = Modifier.size(width = 300.dp, height = 200.dp),
+            title = {  },
+            text = {
+                Box(modifier = Modifier.fillMaxSize()){
+                    Text(text = "Change your email", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
+                    Column(modifier = Modifier.padding(top = 30.dp)){
+
+                        var search by rememberSaveable { mutableStateOf("") }
+                        OutlinedTextField(
+                            shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
+                            value = search,
+                            textStyle = TextStyle(fontSize = 17.sp),
+                            label = {
+                                Text(
+                                    text = "New email",
+                                    fontSize = 13.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(start = 10.dp, top = 5.dp)
+                                .width(260.dp)
+                                .height(58.dp),
+                            leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Проверено") },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                focusedLabelColor = Color.Black,
+                                unfocusedLabelColor = Color.Black,
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            ),
+                            onValueChange = { search = it }
+                        )
+                    }
+                }
+            },
+            buttons = {
+                Box {
+                    Button(onClick = {
+                        openDialogChangeEmail.value = false
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 30.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Close", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+
+                    Button(onClick = {
+                        openDialogChangeEmail.value = false
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 160.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Send token", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+            }
+        )
     }
 
 
