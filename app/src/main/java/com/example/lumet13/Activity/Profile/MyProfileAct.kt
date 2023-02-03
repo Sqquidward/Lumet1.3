@@ -390,7 +390,7 @@ fun mainProfile(userDTO: UserDTO){
                             Box(
 
                             ){
-                                Text(text = "Text 1",
+                                Text(text = "Running",
                                     fontSize = 16.sp,
                                     fontFamily = manrope,
                                     fontWeight = FontWeight.SemiBold,
@@ -403,7 +403,7 @@ fun mainProfile(userDTO: UserDTO){
                             Box(
                                 modifier = Modifier.padding(top = 7.dp)
                             ){
-                                Text(text = "Text 2",
+                                Text(text = "Biking",
                                     fontSize = 16.sp,
                                     fontFamily = manrope,
                                     fontWeight = FontWeight.SemiBold,
@@ -416,7 +416,7 @@ fun mainProfile(userDTO: UserDTO){
                             Box(
                                 modifier = Modifier.padding(top = 7.dp)
                             ){
-                                Text(text = "Text 3",
+                                Text(text = "Swimming",
                                     fontSize = 16.sp,
                                     fontFamily = manrope,
                                     fontWeight = FontWeight.SemiBold,
@@ -429,7 +429,7 @@ fun mainProfile(userDTO: UserDTO){
                             Box(
                                 modifier = Modifier.padding(top = 7.dp)
                             ){
-                                Text(text = "Text 4",
+                                Text(text = "Walking",
                                     fontSize = 16.sp,
                                     fontFamily = manrope,
                                     fontWeight = FontWeight.SemiBold,

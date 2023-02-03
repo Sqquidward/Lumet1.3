@@ -50,6 +50,7 @@ fun SettingActiv(){
     var openDialogChangeEmailToken = remember { mutableStateOf(false) }
     var openDialogChangePassword = remember { mutableStateOf(false) }
     var openDialogChangePasswordToken = remember { mutableStateOf(false) }
+    var openDialogChangePrivacy = remember { mutableStateOf(false) }
     Button(
         onClick = {
             Context.startActivity(
@@ -132,7 +133,7 @@ fun SettingActiv(){
 
 
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { openDialogChangePassword.value = true },
         colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
         modifier = Modifier
             .padding(start = 40.dp, top = 140.dp, end = 40.dp, bottom = 5.dp)
@@ -216,7 +217,7 @@ fun SettingActiv(){
     }
 
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { openDialogChangePrivacy.value = true },
         colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
         modifier = Modifier
             .padding(start = 220.dp, top = 260.dp, end = 40.dp, bottom = 5.dp)
@@ -290,10 +291,10 @@ fun SettingActiv(){
                     Text(text = "Change your email", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
                     Column(modifier = Modifier.padding(top = 30.dp)){
 
-                        var search by rememberSaveable { mutableStateOf("") }
+                        var email by rememberSaveable { mutableStateOf("") }
                         OutlinedTextField(
                             shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
-                            value = search,
+                            value = email,
                             textStyle = TextStyle(fontSize = 17.sp),
                             label = {
                                 Text(
@@ -315,7 +316,7 @@ fun SettingActiv(){
                                 focusedBorderColor = Color.Black,
                                 unfocusedBorderColor = Color.Black
                             ),
-                            onValueChange = { search = it }
+                            onValueChange = { email = it }
                         )
                     }
                 }
@@ -370,10 +371,10 @@ fun SettingActiv(){
                     Text(text = "Change your token", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
                     Column(modifier = Modifier.padding(top = 30.dp)){
 
-                        var search by rememberSaveable { mutableStateOf("") }
+                        var emailToken by rememberSaveable { mutableStateOf("") }
                         OutlinedTextField(
                             shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
-                            value = search,
+                            value = emailToken,
                             textStyle = TextStyle(fontSize = 17.sp),
                             label = {
                                 Text(
@@ -395,7 +396,7 @@ fun SettingActiv(){
                                 focusedBorderColor = Color.Black,
                                 unfocusedBorderColor = Color.Black
                             ),
-                            onValueChange = { search = it }
+                            onValueChange = { emailToken = it }
                         )
                     }
                 }
@@ -435,6 +436,226 @@ fun SettingActiv(){
         )
     }
 
+
+    if (openDialogChangePassword.value) {
+        AlertDialog(
+            onDismissRequest = {
+
+            },
+            modifier = Modifier.size(width = 300.dp, height = 200.dp),
+            title = {  },
+            text = {
+                Box(modifier = Modifier.fillMaxSize()){
+                    Text(text = "Change your password", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
+                    Column(modifier = Modifier.padding(top = 30.dp)){
+
+                        var password by rememberSaveable { mutableStateOf("") }
+                        OutlinedTextField(
+                            shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
+                            value = password,
+                            textStyle = TextStyle(fontSize = 17.sp),
+                            label = {
+                                Text(
+                                    text = "New password",
+                                    fontSize = 13.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(start = 10.dp, top = 5.dp)
+                                .width(260.dp)
+                                .height(58.dp),
+                            leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Проверено") },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                focusedLabelColor = Color.Black,
+                                unfocusedLabelColor = Color.Black,
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            ),
+                            onValueChange = { password = it }
+                        )
+                    }
+                }
+            },
+            buttons = {
+                Box {
+                    Button(onClick = {
+                        openDialogChangePassword.value = false
+
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 30.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Close", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+
+                    Button(onClick = {
+                        openDialogChangePassword.value = false
+                        openDialogChangePasswordToken.value = true
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 160.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Send token", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+            }
+        )
+    }
+
+
+    if (openDialogChangePasswordToken.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialogChangePasswordToken.value = false
+            },
+            modifier = Modifier.size(width = 300.dp, height = 200.dp),
+            title = {  },
+            text = {
+                Box(modifier = Modifier.fillMaxSize()){
+                    Text(text = "Change your token", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
+                    Column(modifier = Modifier.padding(top = 30.dp)){
+
+                        var  passwordToken by rememberSaveable { mutableStateOf("") }
+                        OutlinedTextField(
+                            shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
+                            value = passwordToken,
+                            textStyle = TextStyle(fontSize = 17.sp),
+                            label = {
+                                Text(
+                                    text = "Your token",
+                                    fontSize = 13.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(start = 10.dp, top = 5.dp)
+                                .width(260.dp)
+                                .height(58.dp),
+                            leadingIcon = { Icon(Icons.Filled.Email, contentDescription = "Проверено") },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                focusedLabelColor = Color.Black,
+                                unfocusedLabelColor = Color.Black,
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            ),
+                            onValueChange = { passwordToken = it }
+                        )
+                    }
+                }
+            },
+            buttons = {
+                Box {
+                    Button(onClick = {
+                        openDialogChangePasswordToken.value = false
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 30.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Close", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+
+                    Button(onClick = {
+                        openDialogChangePasswordToken.value = false
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 160.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Send token", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+            }
+        )
+    }
+
+
+    if (openDialogChangePrivacy.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialogChangePrivacy.value = false
+            },
+            modifier = Modifier.size(width = 200.dp, height = 400.dp),
+            title = {  },
+            text = {
+                Box(modifier = Modifier.fillMaxSize()){
+                    Text(text = "Choose your hooby", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
+                    Column(modifier = Modifier.padding(top = 30.dp)){
+                        Box(
+
+                        ){
+                            Text(text = "Running",
+                                fontSize = 16.sp,
+                                fontFamily = manrope,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.Black,
+                                modifier = Modifier.clickable(onClick = {
+                                    openDialogChangePrivacy.value = false
+                                }))
+
+                        }
+                        Box(
+                            modifier = Modifier.padding(top = 7.dp)
+                        ){
+                            Text(text = "Biking",
+                                fontSize = 16.sp,
+                                fontFamily = manrope,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.Black,
+                                modifier = Modifier.clickable(onClick = {
+                                    openDialogChangePrivacy.value = false
+                                }))
+
+                        }
+                        Box(
+                            modifier = Modifier.padding(top = 7.dp)
+                        ){
+                            Text(text = "Swimming",
+                                fontSize = 16.sp,
+                                fontFamily = manrope,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.Black,
+                                modifier = Modifier.clickable(onClick = {
+                                    openDialogChangePrivacy.value = false
+                                }))
+
+                        }
+
+
+
+
+                    }
+                }
+            },
+            buttons = {
+            }
+        )
+    }
 
 
 }
