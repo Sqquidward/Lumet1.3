@@ -26,20 +26,39 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.starDraw
 import com.example.lumet13.Activity.Maps.MapsAct
+import com.example.lumet13.Activity.Profile.MyEvents.MyEvent
+import com.example.lumet13.Activity.Profile.MyEvents.MyEventsAct
 import com.example.lumet13.Activity.Profile.MyFriends.MyFriendsAct
 import com.example.lumet13.Activity.Profile.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
+import com.example.lumet13.Request.Retrofit.RequestListener
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import com.example.lumet13.db.DBHandler
 
-var userDTO  = UserDTO()
+
 class MyProfileAct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
-        setContent {
-            mainProfile()
+        val dbHandler: DBHandler = DBHandler(this)
+
+        val requestListener = object : RequestListener<UserDTO>{
+            override fun onFetchData(t: UserDTO) {
+                setContent {
+                    mainProfile(t)
+                }
+            }
+
+            override fun onError(message: String?) {
+                println(message)
+            }
+
         }
+
+//        userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
+        val req = RetrofitRequest()
+        req.RequestGetDataUser(dbHandler.readUsers()!![0].courseToken, requestListener)
     }
 }
 
@@ -47,7 +66,7 @@ class MyProfileAct : ComponentActivity() {
 
 
 @Composable
-fun mainProfile(){
+fun mainProfile(userDTO: UserDTO){
 
     var Context = LocalContext.current
     var openDialog = remember { mutableStateOf(false) }
@@ -82,7 +101,7 @@ fun mainProfile(){
     )
 
     Text(
-        text = "Mike",
+        text = userDTO.login!!,
         fontSize = 35.sp ,
         modifier = Modifier.padding(start = 163.dp, top = 30.dp),
         color = Color.Black,
@@ -95,7 +114,7 @@ fun mainProfile(){
     }
 
     Text(
-        text = "15 years",
+        text =  userDTO.age.toString()+" years",
         fontSize = 20.sp ,
         modifier = Modifier.padding(start = 163.dp, top = 70.dp),
         color = Color.DarkGray,
@@ -107,7 +126,7 @@ fun mainProfile(){
     Button(
         onClick = {
             Context.startActivity(
-                Intent(Context, MyFriendsAct::class.java)
+                Intent(Context, MyFriendsAct::class.java).apply { putExtra("UserDTO", userDTO) }
             )
         },
         colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
@@ -121,6 +140,8 @@ fun mainProfile(){
                 modifier = Modifier
                     .padding(start = 0.dp, top = 7.dp)
                     .size(20.dp),
+
+
                 bitmap = ImageBitmap.imageResource(R.drawable.friend_icon),
 
                 contentDescription = null
@@ -135,7 +156,7 @@ fun mainProfile(){
                 fontWeight = FontWeight.W600
             )
 
-            Text(text = "13",
+            Text(text = userDTO.friends!!.friendlist.size.toString(),
                 fontSize = 17.sp ,
                 modifier = Modifier.padding(start = 255.dp, top = 6.dp),
                 color = Color.Black,
@@ -147,7 +168,13 @@ fun mainProfile(){
     }
 
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {
+
+            Context.startActivity(
+                Intent(Context, MyEventsAct::class.java).apply { putExtra("UserDTO", userDTO) }
+            )
+
+                  },
         colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
         modifier = Modifier
             .padding(start = 40.dp, top = 430.dp, end = 40.dp, bottom = 5.dp)
@@ -195,7 +222,7 @@ fun mainProfile(){
                 )
 
                 Text(
-                    text = " Hobby",
+                    text = userDTO.hobbytype.toString(),
                     fontSize = 17.sp ,
                     modifier = Modifier.padding(start = 30.dp, top = 6.dp),
                     color = Color.Black,

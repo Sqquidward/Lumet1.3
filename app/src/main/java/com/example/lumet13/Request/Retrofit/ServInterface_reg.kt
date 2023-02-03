@@ -36,7 +36,7 @@ interface ServInterface_reg {
     @GET("users/getALLUsers")
     fun GetALLUsers(): Call<List<UserDTO>>
 
-    @GET("users/getUserListById")
+    @POST("users/getUserListById")
     fun GetUserListById(@Body userIdList: List<Int>): Call<List<UserDTO>>
 
     @GET("users/getALLUsers/sort_and_search/{search}/{min_age}/{rating}/{hobby}")
@@ -133,6 +133,9 @@ interface ServInterface_reg {
 
     ): Call<List<EventDTO>>
 
+
+    @POST("users/get_events_list_by_id")
+    fun GetEventsListById(@Body eventIdList: List<Int>): Call<List<EventDTO>>
 
 
 //Interaction

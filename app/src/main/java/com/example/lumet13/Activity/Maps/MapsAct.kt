@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.AllEvents
 import com.example.lumet13.Activity.Events.CreateEventAct
 import com.example.lumet13.Activity.Events.ProfileEventAct
-import com.example.lumet13.Activity.Events.starDraw
 import com.example.lumet13.Activity.Profile.MyProfileAct
 import com.example.lumet13.Activity.Setting.SettingAct
 import com.example.lumet13.Activity.Users.AllUsers
@@ -64,7 +63,9 @@ class MapsAct : ComponentActivity() {
 
         val requestListener = object : RequestListener<List<EventDTO>?>{
             override fun onFetchData(t: List<EventDTO>?) {
-                println("test")
+                setContent {
+                    mainM(userDTO, t!!)
+                }
             }
 
             override fun onError(message: String?) {
@@ -76,9 +77,7 @@ class MapsAct : ComponentActivity() {
         val req = RetrofitRequest()
         req.RequestGetDataEvents(dbHandler.readUsers()!![0].courseToken, requestListener)
 
-        setContent {
-            mainM()
-        }
+
     }
 
 
@@ -86,7 +85,7 @@ class MapsAct : ComponentActivity() {
 
 
 @Composable
-fun mainM(){
+fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
@@ -118,7 +117,9 @@ fun mainM(){
                         .padding(start = 125.dp, top = 48.dp)
                         .clickable(onClick = {
                             Context.startActivity(
-                                Intent(Context, MyProfileAct::class.java).apply { putExtra("UserDTO", userDTO) }
+                                Intent(Context, MyProfileAct::class.java).apply { putExtra("UserDTO",
+                                    com.example.lumet13.Activity.Maps.userDTO
+                                ) }
                             )
                         })
 
