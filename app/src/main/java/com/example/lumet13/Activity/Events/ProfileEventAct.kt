@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.ui.theme.Lumet13Theme
 import com.example.lumet13.Activity.Maps.MapsAct
-import com.example.lumet13.Activity.Profile.userDTO
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO

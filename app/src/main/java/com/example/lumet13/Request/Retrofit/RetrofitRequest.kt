@@ -311,7 +311,7 @@ class RetrofitRequest {
         })
     }
 
-    fun RequestChangeLogin(token: String?, hobbytypeName:String) {
+    fun RequestChangeHobby(token: String?, hobbytypeName:String) {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
             val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
@@ -371,6 +371,37 @@ class RetrofitRequest {
         })
     }
 
+
+    fun RequestGetEventsById(token: String?, listener: RequestListener<List<EventDTO>?>, eventIdList: List<Int>) {
+
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
+            chain.proceed(request)
+        }
+        val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build()
+        val serviceC = retrofitCustom.create(
+            ServInterface_reg::class.java
+        )
+
+        val callGetUser = serviceC.GetEventsListById(eventIdList)
+        callGetUser.enqueue(object : Callback<List<EventDTO>?> {
+            override fun onResponse(call: Call<List<EventDTO>?>, response: Response<List<EventDTO>?>) {
+                try {
+                    println()
+                    listener.onFetchData(response.body())
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    println(response.body())
+                }
+            }
+
+            override fun onFailure(call: Call<List<EventDTO>?>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+    }
 
 
 //    fun Test() {

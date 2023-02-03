@@ -4,15 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.lumet13.Activity.Profile.MyFriends.ui.theme.Lumet13Theme
-import com.example.lumet13.Activity.Users.User
-import com.example.lumet13.Activity.Users.usersList
 import android.content.Intent
 
 import androidx.compose.foundation.Image
@@ -29,43 +23,40 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDirection.Companion.Content
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lumet13.Activity.Events.starDraw
-import com.example.lumet13.Activity.Maps.MapsAct
+import com.example.lumet13.Activity.Maps.userDTO
 import com.example.lumet13.Activity.Profile.MyProfileAct
-import com.example.lumet13.Activity.Users.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
 import com.example.lumet13.Request.Retrofit.RequestListener
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
-import com.google.android.gms.maps.model.MarkerOptions
-import lumetbackend.entities.EventDTO
+import com.example.lumet13.db.DBHandler
 
 class MyFriendsAct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val dbHandler: DBHandler = DBHandler(this)
 
+        userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
         val requestListener = object : RequestListener<List<UserDTO>> {
             override fun onFetchData(t: List<UserDTO>) {
-                TODO("Not yet implemented")
+
+                setContent {
+                    AppMyFriendsActivity(t)
+                }
             }
 
             override fun onError(message: String?) {
@@ -73,18 +64,17 @@ class MyFriendsAct : ComponentActivity() {
             }
         }
 
-      //  val req = RetrofitRequest()
-      //  req.RequestGetDataAllUsers("token", requestListener)
+        val req = RetrofitRequest()
+        req.RequestGetDataUserListById(dbHandler.readUsers()!![0].courseToken, requestListener,
+            userDTO.friends!!.friendlist.toList()
+        )
 
-        setContent {
-            AppMyFriendsActivity()
-        }
     }
 }
 
 
 @Composable
-fun AppMyFriendsActivity() {
+fun AppMyFriendsActivity(userDTO: List<UserDTO>) {
     var Context = LocalContext.current
     Column() {
         Box {
@@ -141,7 +131,7 @@ fun AppMyFriendsActivity() {
         Box(modifier = Modifier.padding(top = 10.dp)){
             Scaffold(
                 content = {
-                    MyFriendHomeContent()
+                    MyFriendHomeContent(userDTO)
                 }
             )
 
@@ -151,8 +141,8 @@ fun AppMyFriendsActivity() {
 }
 
 @Composable
-fun MyFriendHomeContent() {
-    val friend = remember { friendList }
+fun MyFriendHomeContent(userDTO: List<UserDTO>) {
+    val friend = remember { userDTO }
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
@@ -166,7 +156,7 @@ fun MyFriendHomeContent() {
 
 
 @Composable
-fun MyFriendsListItem(friend: Friend) {
+fun MyFriendsListItem(friend: UserDTO) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -181,7 +171,7 @@ fun MyFriendsListItem(friend: Friend) {
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            Text(text = friend.name,
+            Text(text = friend.login!!,
                 fontSize = 18.sp,
                 color = androidx.compose.ui.graphics.Color.Black,
                 fontFamily = manrope,
@@ -206,7 +196,7 @@ fun MyFriendsListItem(friend: Friend) {
                 )
             }
 
-            if(friend.privacity){
+            if(friend.privacystatusChat == "ALL"){
                 Image(
                     modifier = Modifier
                         .padding(start = 290.dp)
@@ -216,7 +206,7 @@ fun MyFriendsListItem(friend: Friend) {
                     contentDescription = null
                 )
             }
-            for (i in 0..(friend.rating-1)){
+            for (i in 0..(friend.rating!!/2-1)){
                 Image(
                     modifier = Modifier
                         .padding(start = 30.dp + (i * 11).dp, top = 21.dp)

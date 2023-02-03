@@ -45,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lumet13.Activity.Maps.userDTO
 import com.example.lumet13.Activity.Profile.MyFriends.MyFriendsListItem
 
 import com.example.lumet13.Activity.Profile.MyProfileAct
@@ -53,26 +54,40 @@ import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
 import com.example.lumet13.Request.Retrofit.RequestListener
+import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import com.example.lumet13.db.DBHandler
+import lumetbackend.entities.EventDTO
 
 class MyEventsAct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val requestListener = object : RequestListener<List<UserDTO>> {
-            override fun onFetchData(t: List<UserDTO>) {
-                TODO("Not yet implemented")
+
+        val dbHandler: DBHandler = DBHandler(this)
+
+        userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
+        val requestListener = object : RequestListener<List<EventDTO>?> {
+            override fun onFetchData(t: List<EventDTO>?) {
+                println(t)
+                if(t!=null){
+                setContent {
+                    AppMyEventsActivity(t!!)
+                }
+                }else{setContent {
+                    AppMyEventsActivity(mutableListOf())
+                }
+                }
             }
 
             override fun onError(message: String?) {
-                TODO("Not yet implemented")
+                println("test")
             }
         }
 
-        //  val req = RetrofitRequest()
-        //  req.RequestGetDataAllUsers("token", requestListener)
+          val req = RetrofitRequest()
+          req.RequestGetEventsById(dbHandler.readUsers()!![0].courseToken, requestListener,
+              (userDTO.userEvents!!.createdEvents).toList()
+          )
 
-        setContent {
-            AppMyEventsActivity()
-        }
     }
 }
 
@@ -81,7 +96,7 @@ class MyEventsAct : ComponentActivity() {
 
 
 @Composable
-fun AppMyEventsActivity() {
+fun AppMyEventsActivity(eventDTO: List<EventDTO>) {
     var Context = LocalContext.current
     Column() {
         Box {
@@ -138,7 +153,7 @@ fun AppMyEventsActivity() {
         Box(modifier = Modifier.padding(top = 10.dp)){
             Scaffold(
                 content = {
-                    MyEventsHomeContent()
+                    MyEventsHomeContent(eventDTO)
                 }
             )
 
@@ -148,8 +163,8 @@ fun AppMyEventsActivity() {
 }
 
 @Composable
-fun MyEventsHomeContent() {
-    val event = remember { evetsMyList }
+fun MyEventsHomeContent(eventDTO: List<EventDTO>) {
+    val event = remember { eventDTO }
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
@@ -163,7 +178,7 @@ fun MyEventsHomeContent() {
 
 
 @Composable
-fun MyEventsListItem(event: MyEvent) {
+fun MyEventsListItem(event: EventDTO) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -178,7 +193,7 @@ fun MyEventsListItem(event: MyEvent) {
                 .padding(16.dp)
                 .fillMaxSize()
         ) {
-            Text(text = event.name,
+            Text(text = event.name!!,
                 fontSize = 17.sp,
                 color = Color.Black,
                 fontFamily = manrope,
@@ -186,7 +201,7 @@ fun MyEventsListItem(event: MyEvent) {
                 modifier = Modifier.padding(start = 60.dp, top = 10.dp)
             )
 
-            Text(text = event.age.toString() + "+",
+            Text(text = event.desiredage.toString() + "+",
                 fontSize = 13.sp,
                 color = Color.Black,
                 fontFamily = manrope,
@@ -203,7 +218,7 @@ fun MyEventsListItem(event: MyEvent) {
                 contentDescription = null
             )
 
-            if(event.privacy){
+            if(true){
                 Image(
                     modifier = Modifier
                         .padding(start = 290.dp, top = 10.dp)
