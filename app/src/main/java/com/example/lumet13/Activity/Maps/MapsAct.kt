@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.lumet13.Activity.Events.AllEvents
 import com.example.lumet13.Activity.Events.CreateEventAct
 import com.example.lumet13.Activity.Events.ProfileEventAct
@@ -315,7 +316,7 @@ fun mainActivitys() {
     val pos2 = LatLng(44.811058, 20.4627586)
     val pos3 = LatLng(44.810058, 20.4627586)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(pos1, 10f)
+        position = CameraPosition.fromLatLngZoom(pos1, 17f)
     }
 
 
@@ -402,10 +403,10 @@ fun mainSod(animated:Boolean) {
             .clip(RoundedCornerShape(50.dp))
             .background(color = Color.Black)
     ){
-        Image(
-            contentScale = ContentScale.Crop,
-            bitmap = ImageBitmap.imageResource(R.drawable.test_photo_biking),
 
+
+        AsyncImage(
+            model = "http://89.108.81.81:8080/images/getImage/",
             contentDescription = null
         )
     }

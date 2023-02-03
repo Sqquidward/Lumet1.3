@@ -8,9 +8,11 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,7 +23,10 @@ import androidx.compose.ui.modifier.ModifierLocalProvider
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,6 +42,10 @@ import com.example.lumet13.Request.Retrofit.Models.UserDTO
 import com.example.lumet13.Request.Retrofit.RequestListener
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
 import com.example.lumet13.db.DBHandler
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.rememberCameraPositionState
 
 
 class MyProfileAct : ComponentActivity() {
@@ -109,6 +118,131 @@ fun mainProfile(userDTO: UserDTO){
         fontFamily = manrope,
         fontWeight = FontWeight.SemiBold
     )
+
+    var openDialog_edit = remember { mutableStateOf(false) }
+
+    Image(
+        modifier = Modifier.padding(start = 260.dp, top = 45.dp).size(20.dp).clickable(onClick = {openDialog_edit.value = true}),
+        bitmap = ImageBitmap.imageResource(R.drawable.icon_edit),
+        alignment = Alignment.BottomEnd,
+        contentDescription = null
+    )
+
+    if (openDialog_edit.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog_edit.value = false
+            },
+            modifier = Modifier.size(width = 400.dp, height = 250.dp),
+            title = { },
+            text = {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Text(
+                        text = "Change name and token",
+                        fontSize = 16.sp,
+                        fontFamily = manrope,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.Black,
+                        modifier = Modifier.padding()
+                    )
+                    Column(modifier = Modifier.padding(top = 30.dp)) {
+
+                        var new_name by rememberSaveable { mutableStateOf("") }
+                        OutlinedTextField(
+                            shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
+                            value = new_name,
+                            textStyle = TextStyle(fontSize = 17.sp),
+                            label = {
+                                Text(
+                                    text = "Name",
+                                    fontSize = 13.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(start = 10.dp, top = 5.dp)
+                                .width(260.dp)
+                                .height(58.dp),
+                            //leadingIcon = { Icon(Icons.Filled, contentDescription = "Проверено") },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                focusedLabelColor = Color.Black,
+                                unfocusedLabelColor = Color.Black,
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            ),
+                            onValueChange = { new_name = it }
+                        )
+
+                        var new_age by rememberSaveable { mutableStateOf("") }
+                        OutlinedTextField(
+                            shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
+                            value = new_age,
+                            textStyle = TextStyle(fontSize = 17.sp),
+                            label = {
+                                Text(
+                                    text = "Age",
+                                    fontSize = 13.sp,
+                                    fontFamily = manrope,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            },
+                            modifier = Modifier
+                                .padding(start = 10.dp, top = 5.dp)
+                                .width(260.dp)
+                                .height(58.dp),
+                            //leadingIcon = { Icon(Icons.Filled, contentDescription = "Проверено") },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                textColor = Color.Black,
+                                focusedLabelColor = Color.Black,
+                                unfocusedLabelColor = Color.Black,
+                                focusedBorderColor = Color.Black,
+                                unfocusedBorderColor = Color.Black
+                            ),
+                            onValueChange = { new_age = it }
+                        )
+                    }
+                }
+            },
+            buttons = {
+                Box {
+                    Button(onClick = {
+                        openDialog_edit.value = false
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 30.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Close", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+
+                    Button(onClick = {
+                        openDialog_edit.value = false
+                    },
+
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
+                        modifier = Modifier
+                            .padding(start = 160.dp, bottom = 10.dp)
+                            .size(width = 120.dp, height = 35.dp),
+                        shape = RoundedCornerShape(20)
+                    )
+                    {
+                        Text("Send token", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                    }
+                }
+
+
+
+            }
+        )
+    }
+
+
 
     for (i in 0..4){
         starDraw(i*20, 98)
@@ -398,7 +532,7 @@ fun post() {
             .background(color = Color.Black)
     ){
         Image(
-            contentScale = ContentScale.Crop,
+
             bitmap = ImageBitmap.imageResource(R.drawable.test_photo5),
 
             contentDescription = null
