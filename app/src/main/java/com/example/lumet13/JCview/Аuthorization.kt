@@ -69,7 +69,7 @@ fun backgroung(){
         maxLines = 1,
         fontSize = 56.sp,
         style = LocalTextStyle.current,
-        modifier = Modifier.padding(start = 151.dp, top = 151.dp)
+        modifier = Modifier.padding(start = 151.dp, top = 147.dp)
         //horizontal = 131.dp, vertical = 127.dp
     )
 

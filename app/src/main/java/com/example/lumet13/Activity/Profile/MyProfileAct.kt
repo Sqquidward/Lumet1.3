@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.ModifierLocalProvider
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +30,7 @@ import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Activity.Profile.MyFriends.MyFriendsAct
 import com.example.lumet13.Activity.Profile.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
+import com.example.lumet13.JCview.backgroung
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
 
@@ -48,6 +50,13 @@ class MyProfileAct : ComponentActivity() {
 
 @Composable
 fun mainProfile(){
+
+
+    Image(
+        modifier = Modifier.padding(start = 250.dp, top = 45.dp).size(13.dp),
+        bitmap = ImageBitmap.imageResource(R.drawable.icon_edit),
+        contentDescription = null
+    )
 
     var Context = LocalContext.current
     var openDialog = remember { mutableStateOf(false) }
@@ -72,14 +81,22 @@ fun mainProfile(){
     }
 
 
-    Image(
+
+
+    Box(
         modifier = Modifier
             .padding(start = 40.dp, top = 25.dp)
-            .size(100.dp),
-        bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
-        alignment = Alignment.BottomEnd,
-        contentDescription = null
-    )
+            .size(100.dp)
+            .clip(RoundedCornerShape(50.dp))
+            .background(color = Color.Black)
+    ){
+        Image(
+            contentScale = ContentScale.Crop,
+            bitmap = ImageBitmap.imageResource(R.drawable.test_photo5),
+
+            contentDescription = null
+        )
+    }
 
     Text(
         text = "Mike",
@@ -195,7 +212,7 @@ fun mainProfile(){
                 )
 
                 Text(
-                    text = " Hobby",
+                    text = " Biking",
                     fontSize = 17.sp ,
                     modifier = Modifier.padding(start = 30.dp, top = 6.dp),
                     color = Color.Black,
@@ -307,7 +324,14 @@ fun mainProfile(){
                 .size(width = 100.dp, height = 150.dp)
                 .clip(shape = RoundedCornerShape(20.dp))
                 .background(color = Color.Black)
-        )
+        ){
+            Image(
+                contentScale = ContentScale.Crop,
+                bitmap = ImageBitmap.imageResource(R.drawable.test_photo1),
+
+                contentDescription = null
+            )
+        }
 
         Box(
             modifier = Modifier
@@ -315,7 +339,14 @@ fun mainProfile(){
                 .size(width = 130.dp, height = 150.dp)
                 .clip(shape = RoundedCornerShape(20.dp))
                 .background(color = Color.Black)
-        )
+        ){
+            Image(
+                contentScale = ContentScale.Crop,
+                bitmap = ImageBitmap.imageResource(R.drawable.test_photo2),
+
+                contentDescription = null
+            )
+        }
 
         Box(
             modifier = Modifier
@@ -323,7 +354,14 @@ fun mainProfile(){
                 .size(width = 70.dp, height = 150.dp)
                 .clip(shape = RoundedCornerShape(20.dp))
                 .background(color = Color.Black)
-        )
+        ){
+            Image(
+                contentScale = ContentScale.Crop,
+                bitmap = ImageBitmap.imageResource(R.drawable.test_photo3),
+
+                contentDescription = null
+            )
+        }
 
 
         Box(
@@ -340,14 +378,21 @@ fun mainProfile(){
 
 @Composable
 fun post() {
-    Image(
+
+    Box(
         modifier = Modifier
             .padding(start = 40.dp, top = 555.dp)
-            .size(60.dp),
-        bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
-        alignment = Alignment.BottomEnd,
-        contentDescription = null
-    )
+            .size(60.dp)
+            .clip(RoundedCornerShape(50.dp))
+            .background(color = Color.Black)
+    ){
+        Image(
+            contentScale = ContentScale.Crop,
+            bitmap = ImageBitmap.imageResource(R.drawable.test_photo5),
+
+            contentDescription = null
+        )
+    }
 
     Text(
         text = "Mike",
@@ -372,8 +417,15 @@ fun post() {
             .padding(start = 40.dp, top = 630.dp, end = 40.dp)
             .size(width = 400.dp, height = 180.dp)
             .clip(shape = RoundedCornerShape(20.dp))
-            .background(color = Color.Black)
-    )
+            .background(color = Color.Black)){
+                Image(
+                    contentScale = ContentScale.Crop,
+                    bitmap = ImageBitmap.imageResource(R.drawable.test_photo4),
+
+                    contentDescription = null
+                )
+            }
+
 
 }
 

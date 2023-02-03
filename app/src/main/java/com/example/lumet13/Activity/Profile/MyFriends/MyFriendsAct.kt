@@ -37,6 +37,7 @@ import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
@@ -188,14 +189,22 @@ fun MyFriendsListItem(friend: Friend) {
                 modifier = Modifier.padding(start = 35.dp)
             )
 
-            Image(
 
-                bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
+
+            Box(
                 modifier = Modifier
-                    .padding(start = 0.dp, top = 0.dp),
-                alignment = Alignment.BottomEnd,
-                contentDescription = null
-            )
+                    .padding()
+                    .size(28.dp)
+                    .clip(shape = RoundedCornerShape(20.dp))
+                    .background(color = androidx.compose.ui.graphics.Color.Black)
+            ){
+                Image(
+                    contentScale = ContentScale.Crop,
+                    bitmap = ImageBitmap.imageResource(R.drawable.test_photo2),
+
+                    contentDescription = null
+                )
+            }
 
             if(friend.privacity){
                 Image(

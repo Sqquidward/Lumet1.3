@@ -9,6 +9,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +24,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.imageResource
@@ -204,7 +206,22 @@ fun mainM(){
                     contentDescription = null
                 )
 
-                Image(
+                Box(
+                    modifier = Modifier
+                        .size(105.dp)
+                        .padding(start = 20.dp, top = 30.dp)
+                        .clip(RoundedCornerShape(50.dp))
+                        .background(color = Color.Black)
+                ){
+                    Image(
+                        contentScale = ContentScale.Crop,
+                        bitmap = ImageBitmap.imageResource(R.drawable.test_photo5),
+
+                        contentDescription = null
+                    )
+                }
+
+                    Image(
                     modifier = Modifier
                         .size(15.dp)
                         .padding(horizontal = 10.dp),
@@ -239,6 +256,12 @@ fun mainM(){
                     alignment = Alignment.BottomEnd,
                     contentDescription = null
                 )
+                Image(
+                    modifier = Modifier.padding(start = 30.dp, top = 373.dp),
+                    bitmap = ImageBitmap.imageResource(R.drawable.icon_profile),
+                    alignment = Alignment.BottomEnd,
+                    contentDescription = null
+                )
 
             }
 
@@ -249,7 +272,14 @@ fun mainM(){
             scope.launch{
                 scaffoldState.drawerState.open()}
 
-        },colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White)) {
+        },colors = ButtonDefaults.buttonColors(contentColor = Color.White, disabledBackgroundColor = Color.White, backgroundColor = Color.White),
+        modifier = Modifier.padding(start = 15.dp)) {
+            Image(
+                modifier = Modifier.padding(),
+                bitmap = ImageBitmap.imageResource(R.drawable.icon_tema),
+                alignment = Alignment.BottomEnd,
+                contentDescription = null
+            )
         }
 
 
@@ -269,8 +299,10 @@ fun mainM(){
 @Composable
 fun mainActivitys() {
 
-    var digit = R.drawable.icon3
-    var people = R.drawable.people
+    var marker = R.drawable.icon3
+    var people1 = R.drawable.people
+    var people2 = R.drawable.people2
+    var event3 = R.drawable.test_event
 
     var animatedd by remember { mutableStateOf(false) }
     val size by animateDpAsState(
@@ -278,10 +310,14 @@ fun mainActivitys() {
         animationSpec = tween(durationMillis = 800, delayMillis = 500)
     )
 
-    val singapore = LatLng(1.35, 103.87)
+    val pos1 = LatLng(44.811058, 20.4617586)
+    val pos2 = LatLng(44.811058, 20.4627586)
+    val pos3 = LatLng(44.810058, 20.4627586)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(pos1, 10f)
     }
+
+
 
 
     Box(
@@ -294,19 +330,51 @@ fun mainActivitys() {
             cameraPositionState = cameraPositionState
         ) {
             Marker(
-                state =  rememberMarkerState(position = singapore),
-                icon = BitmapDescriptorFactory.fromResource(digit)
+                state =  rememberMarkerState(position = pos1),
+                icon = BitmapDescriptorFactory.fromResource(marker)
             )
 
             Marker(
-                state = rememberMarkerState(position = singapore),
-                title = "Mike",
-                snippet = "Marker in Singapore",
-                icon = BitmapDescriptorFactory.fromResource(people),
+                state = rememberMarkerState(position = pos1),
+                title = "Biking",
+                snippet = "",
+                icon = BitmapDescriptorFactory.fromResource(event3),
                 onInfoWindowClick = { _ ->
                     animatedd =! animatedd
                 }
             )
+
+            Marker(
+                state =  rememberMarkerState(position = pos2),
+                icon = BitmapDescriptorFactory.fromResource(marker)
+            )
+
+            Marker(
+                state = rememberMarkerState(position = pos2),
+                title = "Mike",
+                snippet = "Marker in Singapore",
+                icon = BitmapDescriptorFactory.fromResource(people1),
+                onInfoWindowClick = { _ ->
+                    animatedd =! animatedd
+                }
+            )
+
+
+            Marker(
+                state =  rememberMarkerState(position = pos3),
+                icon = BitmapDescriptorFactory.fromResource(marker)
+            )
+
+            Marker(
+                state = rememberMarkerState(position = pos3),
+                title = "Mike",
+                snippet = "Marker in Singapore",
+                icon = BitmapDescriptorFactory.fromResource(people2),
+                onInfoWindowClick = { _ ->
+                    animatedd =! animatedd
+                }
+            )
+
 
 
         }
@@ -324,18 +392,25 @@ fun mainSod(animated:Boolean) {
     val alpha by animateFloatAsState(
         targetValue = if(animated) 1f else 0f,
         animationSpec = tween(durationMillis = 400, delayMillis = 800))
-    Image(
+
+    Box(
         modifier = Modifier
             .padding(start = 40.dp, top = 509.dp)
             .size(100.dp)
-            .alpha(alpha),
-        bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
-        alignment = Alignment.BottomEnd,
-        contentDescription = null
-    )
+            .alpha(alpha)
+            .clip(RoundedCornerShape(50.dp))
+            .background(color = Color.Black)
+    ){
+        Image(
+            contentScale = ContentScale.Crop,
+            bitmap = ImageBitmap.imageResource(R.drawable.test_photo_biking),
+
+            contentDescription = null
+        )
+    }
 
     Text(
-        text = "Significant",
+        text = "Mountain trip",
         fontSize = 30.sp ,
         modifier = Modifier
             .padding(start = 160.dp, top = 510.dp)

@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
@@ -36,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.starDraw
 import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Activity.Maps.userDTO
+import com.example.lumet13.Activity.Profile.MyProfileAct
 import com.example.lumet13.Activity.Users.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
@@ -243,6 +245,7 @@ fun BarkHomeContent() {
 
 @Composable
 fun PuppyListItem(user: UserDTO) {
+    var Context = LocalContext.current
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -265,17 +268,29 @@ fun PuppyListItem(user: UserDTO) {
                     color = androidx.compose.ui.graphics.Color.Black,
                     fontFamily = manrope,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(start = 35.dp)
+                    modifier = Modifier.padding(start = 35.dp) .clickable(onClick = {
+                        Context.startActivity(
+                            Intent(Context, UserProfile::class.java)
+                        )
+                    })
                 )
 
-                Image(
 
-                    bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
+
+                Box(
                     modifier = Modifier
-                        .padding(start = 0.dp, top = 0.dp),
-                    alignment = Alignment.BottomEnd,
-                    contentDescription = null
-                )
+                        .padding(start = 0.dp, top = 0.dp)
+                        .size(27.dp)
+                        .clip(RoundedCornerShape(50.dp))
+                        .background(color = androidx.compose.ui.graphics.Color.Black)
+                ){
+                    Image(
+                        contentScale = ContentScale.Crop,
+                        bitmap = ImageBitmap.imageResource(R.drawable.test_photo1),
+
+                        contentDescription = null
+                    )
+                }
 
                 if(user.privacystatusChat == "ALL"){
                     Image(

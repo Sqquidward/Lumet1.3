@@ -42,7 +42,7 @@ class validatePswrd : ComponentActivity() {
                 //Context.startActivity(Intent(Context, Registration::class.java))
                 //mainCheck(login = login, email = email, password = password, password_again = password_again)
             },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color(0x7C88D4), contentColor = Color.Black),
+                colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.White),
                 modifier = Modifier
                     .padding(
                         start = 37.dp,
@@ -53,7 +53,7 @@ class validatePswrd : ComponentActivity() {
                 shape = RoundedCornerShape(40)
             )
             {
-                Text("Send token", fontSize = 18.sp, fontFamily = manrope, fontWeight = FontWeight.Bold, color = Color.White)
+                Text("Send token", fontSize = 18.sp, fontFamily = manrope, fontWeight = FontWeight.Bold, color = Color.Black)
             }
 
             TextField(label = "Token", verticalSize = 219, text = token, onTextChange = {token = it})

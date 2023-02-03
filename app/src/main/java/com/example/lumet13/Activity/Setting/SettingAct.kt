@@ -126,15 +126,6 @@ fun SettingActiv(){
         }
     }
 
-    Image(
-        modifier = Modifier
-            .padding(start = 0.dp, top = 7.dp)
-            .size(20.dp),
-        bitmap = ImageBitmap.imageResource(R.drawable.icon_password),
-
-        contentDescription = null
-    )
-
 
 
     Button(

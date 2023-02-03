@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
@@ -76,19 +77,27 @@ fun ProfileEvent(eventDTO:EventDTO) {
 
 
 
-    Image(
+
+
+    Box(
         modifier = Modifier
             .padding(start = 40.dp, top = 65.dp)
-            .size(100.dp),
-        bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
-        alignment = Alignment.BottomEnd,
-        contentDescription = null
-    )
+            .size(100.dp)
+            .clip(RoundedCornerShape(50.dp))
+            .background(color = Color.Black)
+    ){
+        Image(
+            contentScale = ContentScale.Crop,
+            bitmap = ImageBitmap.imageResource(R.drawable.test_photo_biking),
+
+            contentDescription = null
+        )
+    }
 
 
 
     Text(
-        text = eventDTO.name!!,
+        text = "Mountain trip",
         fontSize = 30.sp ,
         modifier = Modifier.padding(start = 160.dp, top = 70.dp),
         color = Color.Black,
@@ -106,7 +115,7 @@ fun ProfileEvent(eventDTO:EventDTO) {
     )
 
     Text(
-        text = eventDTO.hobbytype!!,
+        text = "Biking",
         fontSize = 18.sp ,
         modifier = Modifier.padding(start = 190.dp, top = 112.dp),
         color = Color.DarkGray,
@@ -172,17 +181,26 @@ fun ProfileEvent(eventDTO:EventDTO) {
     )
 
 
-    Image(
+
+
+    Box(
         modifier = Modifier
             .padding(start = 40.dp, top = 325.dp)
-            .size(60.dp),
-        bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
-        alignment = Alignment.BottomEnd,
-        contentDescription = null
-    )
+            .size(60.dp)
+            .clip(RoundedCornerShape(50.dp))
+            .background(color = Color.Black)
+    ){
+        Image(
+            contentScale = ContentScale.Crop,
+            bitmap = ImageBitmap.imageResource(R.drawable.test_photo5),
+
+            contentDescription = null
+        )
+    }
+
 
     Text(
-        text = "Иван Колугин",
+        text = "Ivan Kolugin",
         fontSize = 22.sp ,
         modifier = Modifier.padding(start = 110.dp, top = 332.dp),
         color = Color.Black,
@@ -200,9 +218,9 @@ fun ProfileEvent(eventDTO:EventDTO) {
     )
 
     Text(
-        text = eventDTO.description!!,
+        text = "Lorem ipsum dolor sit amet, pro no choro habemus. Te nibh eius nominati pri, eum no ignota accusata assueverit. Id qui soleat possim veritus. Cu eos oporteat mediocrem democritum, nihil explicari gloriatur eos no. Everti qualisque ei qui. An nam oblique nominati, postea dicunt ex usu. Noster everti has ut, tollit interesset ad sed.\n",
         fontSize = 18.sp ,
-        modifier = Modifier.padding(start = 40.dp, top = 390.dp),
+        modifier = Modifier.padding(start = 40.dp, top = 390.dp, end = 20.dp),
         color = Color.Black,
         fontFamily = manrope,
         fontWeight = FontWeight.W500

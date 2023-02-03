@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.TextStyle
@@ -194,7 +195,7 @@ fun MyAllEvent() {
                 .background(color = Color(R.color.whitegrey))
         ){
             Text(
-                text = eventList.size.toString() + "events",
+                text = eventList.size.toString() + " events",
                 fontSize = 11.sp ,
                 modifier = Modifier.padding(start = 15.dp, top = 4.dp),
                 color = Color.White,
@@ -284,15 +285,22 @@ fun EventListItem(event: EventDTO, context: Context) {
                 modifier = Modifier.padding(start = 61.dp, top = 29.dp)
             )
 
-            Image(
 
-                bitmap = ImageBitmap.imageResource(R.drawable.roundblack),
+
+            Box(
                 modifier = Modifier
                     .padding(start = 10.dp, top = 10.dp)
-                    .size(35.dp),
-                alignment = Alignment.BottomEnd,
-                contentDescription = null
-            )
+                    .size(35.dp)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(color = Color.Black)
+            ){
+                Image(
+                    contentScale = ContentScale.Crop,
+                    bitmap = ImageBitmap.imageResource(R.drawable.test_photo_biking),
+
+                    contentDescription = null
+                )
+            }
 
             if(true){
                 Image(

@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
@@ -89,7 +90,15 @@ fun MakeEvents() {
             .size(width = 400.dp, height = 180.dp)
             .clip(shape = RoundedCornerShape(20.dp))
             .background(color = Color.Black)
-    )
+    ){
+        Image(
+            contentScale = ContentScale.Crop,
+            bitmap = ImageBitmap.imageResource(R.drawable.test_photo_biking),
+
+            contentDescription = null
+        )
+    }
+
 
     Text(
         text = "Сycling in the city",
