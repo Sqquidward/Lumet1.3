@@ -113,11 +113,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.Setting.SettingAct"
@@ -131,9 +127,16 @@
             android:theme="@style/Theme.Lumet13" />
         <activity
             android:name=".Activity.Authorization.Registration"
-            android:exported="false"
+            android:exported="true"
             android:label="@string/title_activity_registration"
-            android:theme="@style/Theme.Lumet13" />
+            android:theme="@style/Theme.Lumet13">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="false"

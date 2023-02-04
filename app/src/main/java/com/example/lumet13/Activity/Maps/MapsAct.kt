@@ -202,7 +202,7 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
 
                 val dbHandler: DBHandler = DBHandler(Context);
                 //RequestGetDataUser(token, listener)
-                Toast.makeText(Context, dbHandler.readUsers().toString(), Toast.LENGTH_SHORT).show()
+            //    Toast.makeText(Context, dbHandler.readUsers().toString(), Toast.LENGTH_SHORT).show()
                 Image(
                     modifier = Modifier
                         .size(105.dp)
