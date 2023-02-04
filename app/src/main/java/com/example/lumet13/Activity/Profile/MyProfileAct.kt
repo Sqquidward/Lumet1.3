@@ -239,6 +239,7 @@ fun mainProfile(userDTO: UserDTO){
                         req.RequestChangeAge(dbHandler.readUsers()!![0].courseToken ,new_age)
 
                         t1 = new_name
+                        t2 = new_age.toInt()
 
                     },
 
@@ -266,7 +267,7 @@ fun mainProfile(userDTO: UserDTO){
     }
 
     Text(
-        text =  userDTO.age.toString()+" years",
+        text =  t2.toString() +" years",
         fontSize = 20.sp ,
         modifier = Modifier.padding(start = 163.dp, top = 70.dp),
         color = Color.DarkGray,

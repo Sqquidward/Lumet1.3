@@ -352,7 +352,30 @@ class RetrofitRequest {
         })
     }
 
-
+    fun RequestChangePassword(token: String?, password:String) {
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
+            chain.proceed(request)
+        }
+        val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build()
+        val serviceC = retrofitCustom.create(
+            ServInterface_reg::class.java
+        )
+        val call = serviceC.changePassword(password )
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                try {
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+    }
 //    Events
 
     fun RequestGetDataEvents(token: String?, listener: RequestListener<List<EventDTO>?>) {

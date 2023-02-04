@@ -32,13 +32,18 @@ import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import com.example.lumet13.db.DBHandler
 
 class SettingAct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         setContent {
             SettingActiv()
         }
+
+
     }
 }
 
@@ -435,7 +440,7 @@ fun SettingActiv(){
             }
         )
     }
-
+    var password by rememberSaveable { mutableStateOf("") }
 
     if (openDialogChangePassword.value) {
         AlertDialog(
@@ -449,7 +454,7 @@ fun SettingActiv(){
                     Text(text = "Change your password", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
                     Column(modifier = Modifier.padding(top = 30.dp)){
 
-                        var password by rememberSaveable { mutableStateOf("") }
+
                         OutlinedTextField(
                             shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
                             value = password,
@@ -498,7 +503,10 @@ fun SettingActiv(){
 
                     Button(onClick = {
                         openDialogChangePassword.value = false
-                        openDialogChangePasswordToken.value = true
+
+                        val dbHandler: DBHandler = DBHandler(Context)
+                        val req = RetrofitRequest()
+                        req.RequestChangePassword(dbHandler.readUsers()!![0].courseToken, password)
                     },
 
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
@@ -508,7 +516,7 @@ fun SettingActiv(){
                         shape = RoundedCornerShape(20)
                     )
                     {
-                        Text("Send token", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                        Text("Send ", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
                     }
                 }
 

@@ -20,6 +20,7 @@ import android.content.Intent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.LazyColumn
@@ -45,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lumet13.Activity.Events.ProfileEventAct
 import com.example.lumet13.Activity.Maps.userDTO
 import com.example.lumet13.Activity.Profile.MyFriends.MyFriendsListItem
 
@@ -176,6 +178,7 @@ fun MyEventsHomeContent(eventDTO: List<EventDTO>) {
 
 @Composable
 fun MyEventsListItem(event: EventDTO) {
+    var context = LocalContext.current
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -189,6 +192,11 @@ fun MyEventsListItem(event: EventDTO) {
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxSize()
+                .clickable {
+                    context.startActivity(
+                        Intent(context, ProfileEventAct::class.java).apply { putExtra("EventDTO", event) }
+                    )
+                }
         ) {
             Text(text = event.name!!,
                 fontSize = 17.sp,

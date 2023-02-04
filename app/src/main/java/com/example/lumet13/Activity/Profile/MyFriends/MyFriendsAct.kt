@@ -11,6 +11,7 @@ import android.content.Intent
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Maps.userDTO
 import com.example.lumet13.Activity.Profile.MyProfileAct
+import com.example.lumet13.Activity.Users.UserProfile
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.Models.UserDTO
@@ -157,6 +159,7 @@ fun MyFriendHomeContent(userDTO: List<UserDTO>) {
 
 @Composable
 fun MyFriendsListItem(friend: UserDTO) {
+    var Context = LocalContext.current
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -177,6 +180,11 @@ fun MyFriendsListItem(friend: UserDTO) {
                 fontFamily = manrope,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.padding(start = 35.dp)
+                    .clickable(onClick = {
+                        Context.startActivity(
+                            Intent(Context, UserProfile::class.java).apply { putExtra("UserDTO", friend) }
+                        )
+                    })
             )
 
 

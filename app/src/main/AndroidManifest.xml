@@ -99,8 +99,15 @@
         </activity>
         <activity
             android:name=".Activity.Maps.MapsAct"
-            android:exported="true"
+            android:exported="false"
             android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.Lumet13">
+
+        </activity>
+        <activity
+            android:name=".Activity.Authorization.SignUp"
+            android:exported="true"
+            android:label="@string/title_activity_sign_up"
             android:theme="@style/Theme.Lumet13">
             <meta-data
                 android:name="android.app.lib_name"
@@ -112,11 +119,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activity.Authorization.SignUp"
-            android:exported="false"
-            android:label="@string/title_activity_sign_up"
-            android:theme="@style/Theme.Lumet13" />
         <activity
             android:name=".Activity.Setting.SettingAct"
             android:exported="false"

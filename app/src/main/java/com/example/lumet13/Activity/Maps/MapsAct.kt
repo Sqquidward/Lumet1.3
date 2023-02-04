@@ -335,13 +335,13 @@ fun mainActivitys(list: List<EventDTO>) {
             cameraPositionState = cameraPositionState
         ) {
 
-            for (ls in list){
-                Marker(
-                    state =  rememberMarkerState(position = LatLng(ls.latitude!!.toDouble(), ls.longitude!!.toDouble())),
-                    icon = BitmapDescriptorFactory.fromResource(marker)
-                )
-
-            }
+//            for (ls in list){
+//                Marker(
+//                    state =  rememberMarkerState(position = LatLng(ls.latitude!!.toDouble(), ls.longitude!!.toDouble())),
+//                    icon = BitmapDescriptorFactory.fromResource(marker)
+//                )
+//
+//            }
 
             Marker(
                 state = rememberMarkerState(position = pos1),
