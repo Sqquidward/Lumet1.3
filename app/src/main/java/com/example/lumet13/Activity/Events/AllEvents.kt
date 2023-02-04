@@ -33,8 +33,11 @@ import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Activity.Maps.userDTO
 import com.example.lumet13.Activity.Profile.MyProfileAct
+import com.example.lumet13.Activity.Users.BarkHomeContent
+import com.example.lumet13.Activity.Users.usersList
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
 import com.example.lumet13.Request.Retrofit.RequestListener
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
 import com.example.lumet13.db.DBHandler
@@ -83,6 +86,7 @@ class AllEvents : ComponentActivity() {
 
 @Composable
 fun MyAllEvent() {
+    var search by rememberSaveable { mutableStateOf("") }
     var Context = LocalContext.current
     var openDialog_sort = remember { mutableStateOf(false) }
     Column() {
@@ -383,7 +387,7 @@ fun MyAllEvent() {
             }
 
 
-            var search by rememberSaveable { mutableStateOf("") }
+
             OutlinedTextField(
                 shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
                 value = search,
@@ -431,11 +435,28 @@ fun MyAllEvent() {
             )
         }
 
+        var eventSearchList = mutableListOf<EventDTO>()
+        var flag:Boolean = true
+        for (n in 0..(usersList.size-1)){
+            if(eventList[n].name!!.contains(search) && search != ""){
+                eventSearchList.add(eventList[n])
+            }
+        }
+
+        if(eventSearchList.size != 0){
+            Box(){
+                Scaffold(
+                    content = {
+                        ContentEvent(eventSearchList, context = Context)
+                    }
+                )
+            }
+        }
 
         Box(){
             Scaffold(
                 content = {
-                    ContentEvent(Context)
+                    ContentEvent(eventList, Context)
                 }
             )
         }
@@ -462,8 +483,8 @@ fun MyAllEvent() {
 }
 
 @Composable
-fun ContentEvent(context: Context) {
-    val event = remember { eventList }
+fun ContentEvent(list: List<EventDTO>, context: Context) {
+    val event = remember { list }
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
