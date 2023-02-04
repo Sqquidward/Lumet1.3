@@ -600,16 +600,16 @@ fun SettingActiv(){
             onDismissRequest = {
                 openDialogChangePrivacy.value = false
             },
-            modifier = Modifier.size(width = 200.dp, height = 400.dp),
+            modifier = Modifier.size(width = 200.dp, height = 200.dp),
             title = {  },
             text = {
                 Box(modifier = Modifier.fillMaxSize()){
-                    Text(text = "Choose your hooby", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
-                    Column(modifier = Modifier.padding(top = 30.dp)){
+                    Text(text = "Who sees your profile?", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
+                    Column(modifier = Modifier.padding(top = 60.dp)){
                         Box(
 
                         ){
-                            Text(text = "Running",
+                            Text(text = "All",
                                 fontSize = 16.sp,
                                 fontFamily = manrope,
                                 fontWeight = FontWeight.SemiBold,
@@ -622,7 +622,7 @@ fun SettingActiv(){
                         Box(
                             modifier = Modifier.padding(top = 7.dp)
                         ){
-                            Text(text = "Biking",
+                            Text(text = "Friends",
                                 fontSize = 16.sp,
                                 fontFamily = manrope,
                                 fontWeight = FontWeight.SemiBold,
@@ -635,7 +635,7 @@ fun SettingActiv(){
                         Box(
                             modifier = Modifier.padding(top = 7.dp)
                         ){
-                            Text(text = "Swimming",
+                            Text(text = "Nobody",
                                 fontSize = 16.sp,
                                 fontFamily = manrope,
                                 fontWeight = FontWeight.SemiBold,

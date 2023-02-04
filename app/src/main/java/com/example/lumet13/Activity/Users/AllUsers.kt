@@ -81,8 +81,12 @@ class AllUsers : ComponentActivity() {
 
 @Composable
 fun MyApp() {
+    var numberSpisok:List<UserDTO>?
     var Context = LocalContext.current
     var openDialog_sort = remember { mutableStateOf(false) }
+    var search by rememberSaveable { mutableStateOf("") }
+    var minimal_age : Int = 0
+
     Column() {
         Box {
 
@@ -133,7 +137,9 @@ fun MyApp() {
             }
 
 
+
             if (openDialog_sort.value) {
+                var min_age by rememberSaveable { mutableStateOf("") }
                 AlertDialog(
                     onDismissRequest = {
                         openDialog_sort.value = false
@@ -150,12 +156,12 @@ fun MyApp() {
                                 color = androidx.compose.ui.graphics.Color.Black,
                                 modifier = Modifier.padding(start = 10.dp)
                             )
+
                             Column(modifier = Modifier.padding(top = 30.dp)) {
 
-                                var new_name by rememberSaveable { mutableStateOf("") }
                                 OutlinedTextField(
                                     shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
-                                    value = new_name,
+                                    value =  min_age,
                                     textStyle = TextStyle(fontSize = 17.sp),
                                     label = {
                                         Text(
@@ -177,7 +183,7 @@ fun MyApp() {
                                         focusedBorderColor = androidx.compose.ui.graphics.Color.Black,
                                         unfocusedBorderColor = androidx.compose.ui.graphics.Color.Black
                                     ),
-                                    onValueChange = { new_name = it }
+                                    onValueChange = {  min_age = it }
                                 )
 
                                 var new_age by rememberSaveable { mutableStateOf("") }
@@ -227,7 +233,8 @@ fun MyApp() {
                                         fontFamily = manrope,
                                         fontWeight = FontWeight.W900,
                                         color = androidx.compose.ui.graphics.Color.Black,
-                                        modifier = Modifier.padding(start = 20.dp)
+                                        modifier = Modifier
+                                            .padding(start = 20.dp)
                                             .clickable(onClick = {
                                                 flag1 = true
                                                 flag2 = false
@@ -242,7 +249,8 @@ fun MyApp() {
                                         fontFamily = manrope,
                                         fontWeight = FontWeight.SemiBold,
                                         color = androidx.compose.ui.graphics.Color.Black,
-                                        modifier = Modifier.padding(start = 20.dp)
+                                        modifier = Modifier
+                                            .padding(start = 20.dp)
                                             .clickable(onClick = {
                                                 flag1 = true
                                                 flag2 = false
@@ -257,7 +265,8 @@ fun MyApp() {
                                         fontFamily = manrope,
                                         fontWeight = FontWeight.W900,
                                         color = androidx.compose.ui.graphics.Color.Black,
-                                        modifier = Modifier.padding(start = 20.dp)
+                                        modifier = Modifier
+                                            .padding(start = 20.dp)
                                             .clickable(onClick = {
                                                 flag2 = true
                                                 flag1 = false
@@ -272,7 +281,8 @@ fun MyApp() {
                                         fontFamily = manrope,
                                         fontWeight = FontWeight.SemiBold,
                                         color = androidx.compose.ui.graphics.Color.Black,
-                                        modifier = Modifier.padding(start = 20.dp)
+                                        modifier = Modifier
+                                            .padding(start = 20.dp)
                                             .clickable(onClick = {
                                                 flag1 = true
                                                 flag2 = false
@@ -289,7 +299,8 @@ fun MyApp() {
                                         fontFamily = manrope,
                                         fontWeight = FontWeight.W900,
                                         color = androidx.compose.ui.graphics.Color.Black,
-                                        modifier = Modifier.padding(start = 20.dp)
+                                        modifier = Modifier
+                                            .padding(start = 20.dp)
                                             .clickable(onClick = {
                                                 flag3 = true
                                                 flag2 = false
@@ -304,7 +315,8 @@ fun MyApp() {
                                         fontFamily = manrope,
                                         fontWeight = FontWeight.SemiBold,
                                         color = androidx.compose.ui.graphics.Color.Black,
-                                        modifier = Modifier.padding(start = 20.dp)
+                                        modifier = Modifier
+                                            .padding(start = 20.dp)
                                             .clickable(onClick = {
                                                 flag1 = true
                                                 flag2 = false
@@ -343,6 +355,11 @@ fun MyApp() {
                             )
                             {
                                 Text("Apply", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                                try {
+
+                                } catch (ex: NumberFormatException) {
+
+                                }
                             }
                         }
 
@@ -353,7 +370,7 @@ fun MyApp() {
             }
 
 
-            var search by rememberSaveable { mutableStateOf("") }
+
             OutlinedTextField(
                 shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
                 value = search,
@@ -380,9 +397,10 @@ fun MyApp() {
                 ),
                 onValueChange = { search = it }
             )
-
-
         }
+
+
+
 
         Box(
             modifier = Modifier
@@ -392,7 +410,7 @@ fun MyApp() {
                 .background(color = androidx.compose.ui.graphics.Color(R.color.whitegrey))
         ){
             Text(
-                text = usersList.size.toString() + " people want to add you as a friend",
+                text = usersList.size.toString() + " your friends",
                 fontSize = 11.sp ,
                 modifier = Modifier.padding(start = 15.dp, top = 4.dp),
                 color = androidx.compose.ui.graphics.Color.White,
@@ -401,39 +419,56 @@ fun MyApp() {
             )
         }
 
-
-        Box(){
-            Scaffold(
-                content = {
-                    BarkHomeContent()
+        var usersSearchList = mutableListOf<UserDTO>()
+        var flag:Boolean = true
+        for (n in 0..(usersList.size-1)){
+            if(usersList[n].login!!.contains(search) && search != ""){
+                usersSearchList.add(usersList[n])
+            }
+        }
+        println(minimal_age)
+        try {
+            for (n in 0..(usersList.size-1)){
+                if(usersList[n].age != null){
+                    if((usersList[n].age!!.toInt() <= minimal_age) && (minimal_age != 0)){
+                        println(usersList)
+                        usersSearchList.add(usersList[n])
+                    }
                 }
-            )
+
+            }
+        }catch (ex: NumberFormatException){}
+
+
+        if(usersSearchList.size != 0){
+            Box(){
+                Scaffold(
+                    content = {
+                        BarkHomeContent(usersSearchList)
+                    }
+                )
+            }
         }
 
 
 
-        Box(
-            modifier = Modifier
-                .padding(start = 40.dp, top = 10.dp, end = 40.dp)
-                .size(width = 400.dp, height = 25.dp)
-                .clip(shape = RoundedCornerShape(10.dp))
-                .background(color = androidx.compose.ui.graphics.Color(R.color.whitegrey))
-        ){
-            Text(
-                text = "Your friends",
-                fontSize = 11.sp ,
-                modifier = Modifier.padding(start = 15.dp, top = 4.dp),
-                color = androidx.compose.ui.graphics.Color.White,
-                fontFamily = manrope,
-                fontWeight = FontWeight.Bold
-            )
-        }
+            Box(){
+                Scaffold(
+                    content = {
+                        BarkHomeContent(usersList)
+                    }
+                )
+            }
+
+
+
+
     }
 }
 
 @Composable
-fun BarkHomeContent() {
-    val users = remember { usersList }
+fun BarkHomeContent(usList: List<UserDTO>) {
+    val users = remember { usList }
     LazyColumn(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
     ) {
@@ -471,11 +506,13 @@ fun PuppyListItem(user: UserDTO) {
                     color = androidx.compose.ui.graphics.Color.Black,
                     fontFamily = manrope,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(start = 35.dp) .clickable(onClick = {
-                        Context.startActivity(
-                            Intent(Context, UserProfile::class.java)
-                        )
-                    })
+                    modifier = Modifier
+                        .padding(start = 35.dp)
+                        .clickable(onClick = {
+                            Context.startActivity(
+                                Intent(Context, UserProfile::class.java)
+                            )
+                        })
                 )
 
 
@@ -517,6 +554,83 @@ fun PuppyListItem(user: UserDTO) {
                 }
 
             }
+
+    }
+}
+
+@Composable
+fun PuppyListItemSearch(user: UserDTO) {
+    var Context = LocalContext.current
+    Card(
+        modifier = Modifier
+            .padding(horizontal = 8.dp, vertical = 10.dp)
+            .size(height = 60.dp, width = 400.dp),
+        elevation = 3.dp,
+        backgroundColor = androidx.compose.ui.graphics.Color.White,
+        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+    ) {
+
+        Box(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()
+                .clickable {
+                    println("JHGJK")
+                }
+        ) {
+            Text(text = user.login!!,
+                fontSize = 18.sp,
+                color = androidx.compose.ui.graphics.Color.Black,
+                fontFamily = manrope,
+                fontWeight = FontWeight.Medium,
+                modifier = Modifier
+                    .padding(start = 35.dp)
+                    .clickable(onClick = {
+                        Context.startActivity(
+                            Intent(Context, UserProfile::class.java)
+                        )
+                    })
+            )
+
+
+
+            Box(
+                modifier = Modifier
+                    .padding(start = 0.dp, top = 0.dp)
+                    .size(27.dp)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(color = androidx.compose.ui.graphics.Color.Black)
+            ){
+                Image(
+                    contentScale = ContentScale.Crop,
+                    bitmap = ImageBitmap.imageResource(R.drawable.test_photo1),
+
+                    contentDescription = null
+                )
+            }
+
+            if(user.privacystatusChat == "ALL"){
+                Image(
+                    modifier = Modifier
+                        .padding(start = 290.dp)
+                        .size(30.dp),
+                    bitmap = ImageBitmap.imageResource(R.drawable.icon_message),
+                    alignment = Alignment.BottomEnd,
+                    contentDescription = null
+                )
+            }
+            for (i in 0..((user.rating!!)/2-1)){
+                Image(
+                    modifier = Modifier
+                        .padding(start = 30.dp + (i * 11).dp, top = 21.dp)
+                        .size(14.dp),
+                    bitmap = ImageBitmap.imageResource(R.drawable.star_black),
+                    alignment = Alignment.BottomEnd,
+                    contentDescription = null
+                )
+            }
+
+        }
 
     }
 }

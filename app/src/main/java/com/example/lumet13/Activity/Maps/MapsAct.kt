@@ -62,7 +62,7 @@ class MapsAct : ComponentActivity() {
         val dbHandler: DBHandler = DBHandler(this)
 
 
-//         userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
+         userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
 
         val requestListener = object : RequestListener<List<EventDTO>?>{
             override fun onFetchData(t: List<EventDTO>?) {
@@ -92,7 +92,6 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
-
     Text(
         text = "Hello",
         fontSize = 30.sp,
@@ -100,6 +99,7 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
         modifier = Modifier
             .padding(start = 70.dp, top = 40.dp)
     )
+
     var Context = LocalContext.current;
 
 
@@ -111,7 +111,7 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
         drawerContent= {
             Box {
                 Text(
-                    text = "Significant",
+                    text = userDTO.login.toString(),
                     fontSize = 25.sp,
                     color = Color.White,
                     fontFamily = manrope,
@@ -120,9 +120,12 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
                         .padding(start = 125.dp, top = 48.dp)
                         .clickable(onClick = {
                             Context.startActivity(
-                                Intent(Context, MyProfileAct::class.java).apply { putExtra("UserDTO",
-                                    com.example.lumet13.Activity.Maps.userDTO
-                                ) }
+                                Intent(Context, MyProfileAct::class.java).apply {
+                                    putExtra(
+                                        "UserDTO",
+                                        com.example.lumet13.Activity.Maps.userDTO
+                                    )
+                                }
                             )
                         })
 
@@ -285,7 +288,7 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
         }
 
 
-        mainActivitys()
+        mainActivitys(list)
     }
 
 
@@ -299,7 +302,7 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
 
 
 @Composable
-fun mainActivitys() {
+fun mainActivitys(list: List<EventDTO>) {
 
     var marker = R.drawable.icon3
     var people1 = R.drawable.people
@@ -313,8 +316,8 @@ fun mainActivitys() {
     )
 
     val pos1 = LatLng(44.811058, 20.4617586)
-    val pos2 = LatLng(44.811058, 20.4627586)
-    val pos3 = LatLng(44.810058, 20.4627586)
+    val pos2 = LatLng(44.811058, 20.4617586)
+    val pos3 = LatLng(44.811058, 20.4617586)
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(pos1, 17f)
     }
@@ -331,10 +334,14 @@ fun mainActivitys() {
             modifier = Modifier.fillMaxSize(),
             cameraPositionState = cameraPositionState
         ) {
-            Marker(
-                state =  rememberMarkerState(position = pos1),
-                icon = BitmapDescriptorFactory.fromResource(marker)
-            )
+
+            for (ls in list){
+                Marker(
+                    state =  rememberMarkerState(position = LatLng(ls.latitude!!.toDouble(), ls.longitude!!.toDouble())),
+                    icon = BitmapDescriptorFactory.fromResource(marker)
+                )
+
+            }
 
             Marker(
                 state = rememberMarkerState(position = pos1),
@@ -451,7 +458,7 @@ fun mainSod(animated:Boolean) {
     for (i in 0..4){
         Image(
             modifier = Modifier
-                .padding(start = 161.dp + (i*20).dp, top = 578.dp)
+                .padding(start = 161.dp + (i * 20).dp, top = 578.dp)
                 .size(18.dp)
                 .alpha(alpha),
             bitmap = ImageBitmap.imageResource(R.drawable.star_black),
