@@ -77,7 +77,12 @@ class MyProfileAct : ComponentActivity() {
 
 @Composable
 fun mainProfile(userDTO: UserDTO){
+    var new_name by rememberSaveable { mutableStateOf("") }
+    var new_age by rememberSaveable { mutableStateOf("") }
+    var t1 by rememberSaveable { mutableStateOf(userDTO.login!!) }
+    var t2 by rememberSaveable { mutableStateOf(userDTO.age!!) }
 
+    
     var Context = LocalContext.current
     var openDialog = remember { mutableStateOf(false) }
     Button(
@@ -111,7 +116,7 @@ fun mainProfile(userDTO: UserDTO){
     )
 
     Text(
-        text = userDTO.login!!,
+        text = t1,
         fontSize = 35.sp ,
         modifier = Modifier.padding(start = 163.dp, top = 30.dp),
         color = Color.Black,
@@ -122,7 +127,10 @@ fun mainProfile(userDTO: UserDTO){
     var openDialog_edit = remember { mutableStateOf(false) }
 
     Image(
-        modifier = Modifier.padding(start = 260.dp, top = 45.dp).size(20.dp).clickable(onClick = {openDialog_edit.value = true}),
+        modifier = Modifier
+            .padding(start = 260.dp, top = 45.dp)
+            .size(20.dp)
+            .clickable(onClick = { openDialog_edit.value = true }),
         bitmap = ImageBitmap.imageResource(R.drawable.icon_edit),
         alignment = Alignment.BottomEnd,
         contentDescription = null
@@ -147,7 +155,7 @@ fun mainProfile(userDTO: UserDTO){
                     )
                     Column(modifier = Modifier.padding(top = 30.dp)) {
 
-                        var new_name by rememberSaveable { mutableStateOf("") }
+
                         OutlinedTextField(
                             shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
                             value = new_name,
@@ -175,7 +183,8 @@ fun mainProfile(userDTO: UserDTO){
                             onValueChange = { new_name = it }
                         )
 
-                        var new_age by rememberSaveable { mutableStateOf("") }
+//                        var new_age by rememberSaveable { mutableStateOf("") }
+
                         OutlinedTextField(
                             shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
                             value = new_age,
@@ -223,6 +232,14 @@ fun mainProfile(userDTO: UserDTO){
 
                     Button(onClick = {
                         openDialog_edit.value = false
+                        val dbHandler: DBHandler = DBHandler(Context)
+                        var req = RetrofitRequest()
+                        req.RequestChangeLogin(dbHandler.readUsers()!![0].courseToken ,new_name)
+//                        var req2 = RetrofitRequest()
+                        req.RequestChangeAge(dbHandler.readUsers()!![0].courseToken ,new_age)
+
+                        t1 = new_name
+
                     },
 
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
@@ -232,7 +249,7 @@ fun mainProfile(userDTO: UserDTO){
                         shape = RoundedCornerShape(20)
                     )
                     {
-                        Text("Send token", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
+                        Text("Apply", fontSize = 13.sp, fontFamily = manrope, fontWeight = FontWeight.Bold)
                     }
                 }
 

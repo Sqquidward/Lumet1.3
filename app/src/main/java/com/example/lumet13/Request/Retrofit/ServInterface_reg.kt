@@ -75,7 +75,7 @@ interface ServInterface_reg {
         @Path("password") password:String
     ): Call<ResponseBody>
 
-    @POST("users/change_user/change_age/{age}}")
+    @POST("users/change_user/change_age/{age}")
     fun changeAge(
         @Path("age") age:String
     ): Call<ResponseBody>
@@ -134,7 +134,7 @@ interface ServInterface_reg {
     ): Call<List<EventDTO>>
 
 
-    @POST("users/get_events_list_by_id")
+    @POST("events/get_events_list_by_id")
     fun GetEventsListById(@Body eventIdList: List<Int>): Call<List<EventDTO>>
 
 

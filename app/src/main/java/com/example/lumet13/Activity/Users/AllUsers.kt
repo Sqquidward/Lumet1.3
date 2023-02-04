@@ -473,7 +473,7 @@ fun PuppyListItem(user: UserDTO) {
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.padding(start = 35.dp) .clickable(onClick = {
                         Context.startActivity(
-                            Intent(Context, UserProfile::class.java)
+                            Intent(Context, UserProfile::class.java).apply { putExtra("UserDTO", user) }
                         )
                     })
                 )

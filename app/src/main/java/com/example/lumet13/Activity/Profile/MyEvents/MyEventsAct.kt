@@ -65,16 +65,13 @@ class MyEventsAct : ComponentActivity() {
         val dbHandler: DBHandler = DBHandler(this)
 
         userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
+
         val requestListener = object : RequestListener<List<EventDTO>?> {
             override fun onFetchData(t: List<EventDTO>?) {
                 println(t)
-                if(t!=null){
+
                 setContent {
                     AppMyEventsActivity(t!!)
-                }
-                }else{setContent {
-                    AppMyEventsActivity(mutableListOf())
-                }
                 }
             }
 

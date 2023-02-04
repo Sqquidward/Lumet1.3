@@ -29,13 +29,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lumet13.Activity.Events.starDraw
 import com.example.lumet13.Activity.Maps.MapsAct
+import com.example.lumet13.Activity.Profile.MyEvents.MyEventsAct
 import com.example.lumet13.Activity.Profile.MyFriends.MyFriendsAct
 import com.example.lumet13.Activity.Users.ui.theme.Lumet13Theme
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
+import com.example.lumet13.Request.Retrofit.Models.UserDTO
 
+var userDTO : UserDTO = UserDTO()
 class UserProfile : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
         super.onCreate(savedInstanceState)
         setContent {
             mainProfileUser()
@@ -130,7 +135,7 @@ fun mainProfileUser(){
     }
 
     Text(
-        text = "Mike",
+        text = userDTO.login!!.toString(),
         fontSize = 35.sp ,
         modifier = Modifier.padding(start = 163.dp, top = 30.dp),
         color = Color.Black,
@@ -143,7 +148,7 @@ fun mainProfileUser(){
     }
 
     Text(
-        text = "15 years",
+        text = userDTO.age.toString(),
         fontSize = 20.sp ,
         modifier = Modifier.padding(start = 163.dp, top = 70.dp),
         color = Color.DarkGray,
@@ -164,34 +169,42 @@ fun mainProfileUser(){
             .size(width = 400.dp, height = 50.dp),
         shape = RoundedCornerShape(30),
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Image(
-                modifier = Modifier
-                    .padding(start = 0.dp, top = 7.dp)
-                    .size(20.dp),
-                bitmap = ImageBitmap.imageResource(R.drawable.friend_icon),
+        if (userDTO.friends != null) {
+            Box(modifier = Modifier.fillMaxSize()
+                .clickable {
+                    Context.startActivity(
+                        Intent(Context, MyFriendsAct::class.java).apply { putExtra("UserDTO", userDTO) }
+                    )
+                }) {
+                Image(
+                    modifier = Modifier
+                        .padding(start = 0.dp, top = 7.dp)
+                        .size(20.dp),
+                    bitmap = ImageBitmap.imageResource(R.drawable.friend_icon),
 
-                contentDescription = null
-            )
+                    contentDescription = null
+                )
 
-            Text(
-                text = " Friends",
-                fontSize = 17.sp ,
-                modifier = Modifier.padding(start = 34.dp, top = 6.dp),
-                color = Color.Black,
-                fontFamily = manrope,
-                fontWeight = FontWeight.W600
-            )
+                Text(
+                    text = " Friends",
+                    fontSize = 17.sp,
+                    modifier = Modifier.padding(start = 34.dp, top = 6.dp),
+                    color = Color.Black,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.W600
+                )
 
-            Text(text = "13",
-                fontSize = 17.sp ,
-                modifier = Modifier.padding(start = 255.dp, top = 6.dp),
-                color = Color.Black,
-                fontFamily = manrope,
-                fontWeight = FontWeight.W600)
+                Text(
+                    text = userDTO.friends!!.friendlist.size.toString(),
+                    fontSize = 17.sp,
+                    modifier = Modifier.padding(start = 255.dp, top = 6.dp),
+                    color = Color.Black,
+                    fontFamily = manrope,
+                    fontWeight = FontWeight.W600
+                )
+            }
+
         }
-
-
     }
 
     Button(
@@ -202,7 +215,10 @@ fun mainProfileUser(){
             .size(width = 170.dp, height = 50.dp),
         shape = RoundedCornerShape(30),
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize()
+            .clickable {             Context.startActivity(
+                Intent(Context, MyEventsAct::class.java).apply { putExtra("UserDTO", userDTO) }
+            ) }) {
             Image(
                 modifier = Modifier
                     .padding(start = 0.dp, top = 7.dp)
@@ -426,7 +442,7 @@ fun post() {
     }
 
     Text(
-        text = "Mike",
+        text = userDTO.login!!,
         fontSize = 24.sp,
         modifier = Modifier.padding(start = 113.dp, top = 557.dp),
         color = Color.Black,

@@ -43,6 +43,18 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+
+        </activity>
+
+        <activity
+            android:name=".Activity.Users.UserProfile"
+            android:exported="false"
+            android:label="@string/title_activity_all_events"
+            android:theme="@style/Theme.Lumet13">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+
         </activity>
         <activity
             android:name=".Activity.Users.AllUsers"

@@ -273,7 +273,7 @@ class RetrofitRequest {
 
 // Change User
 
-    fun RequestChangeLogin(token: String?, login : String, age :String) {
+    fun RequestChangeLogin(token: String?, login : String) {
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor { chain ->
             val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
@@ -297,18 +297,6 @@ class RetrofitRequest {
             }
         })
 
-        val callage= serviceC.changeAge(age)
-        callage.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                try {
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                println("Oшибка  $t")
-            }
-        })
     }
 
     fun RequestChangeHobby(token: String?, hobbytypeName:String) {
@@ -337,6 +325,33 @@ class RetrofitRequest {
 
 
     }
+
+
+    fun RequestChangeAge(token: String?, age:String) {
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor { chain ->
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + token).build()
+            chain.proceed(request)
+        }
+        val retrofitCustom = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://89.108.81.81:8080/").client(httpClient.build()).build()
+        val serviceC = retrofitCustom.create(
+            ServInterface_reg::class.java
+        )
+        val call = serviceC.changeAge(age)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                try {
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                println("Oшибка  $t")
+            }
+        })
+    }
+
 
 //    Events
 
