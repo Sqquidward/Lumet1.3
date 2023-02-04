@@ -62,7 +62,7 @@ class MapsAct : ComponentActivity() {
         val dbHandler: DBHandler = DBHandler(this)
 
 
-         userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
+         //userDTO = intent.getSerializableExtra("UserDTO") as UserDTO
 
         val requestListener = object : RequestListener<List<EventDTO>?>{
             override fun onFetchData(t: List<EventDTO>?) {
@@ -202,7 +202,7 @@ fun mainM(userDTO: UserDTO, list: List<EventDTO>) {
 
                 val dbHandler: DBHandler = DBHandler(Context);
                 //RequestGetDataUser(token, listener)
-                Toast.makeText(Context, dbHandler.readUsers().toString(), Toast.LENGTH_SHORT).show()
+            //    Toast.makeText(Context, dbHandler.readUsers().toString(), Toast.LENGTH_SHORT).show()
                 Image(
                     modifier = Modifier
                         .size(105.dp)
@@ -335,13 +335,7 @@ fun mainActivitys(list: List<EventDTO>) {
             cameraPositionState = cameraPositionState
         ) {
 
-            for (ls in list){
-                Marker(
-                    state =  rememberMarkerState(position = LatLng(ls.latitude!!.toDouble(), ls.longitude!!.toDouble())),
-                    icon = BitmapDescriptorFactory.fromResource(marker)
-                )
 
-            }
 
             Marker(
                 state = rememberMarkerState(position = pos1),

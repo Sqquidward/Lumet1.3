@@ -32,6 +32,7 @@ import com.example.lumet13.Activity.Maps.MapsAct
 import com.example.lumet13.Fonts.manrope
 import com.example.lumet13.R
 import com.example.lumet13.Request.Retrofit.RetrofitRequest
+import com.example.lumet13.db.DBHandler
 
 class SettingAct : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -437,6 +438,7 @@ fun SettingActiv(){
     }
 
 
+    var password by rememberSaveable { mutableStateOf("") }
     if (openDialogChangePassword.value) {
         AlertDialog(
             onDismissRequest = {
@@ -449,7 +451,7 @@ fun SettingActiv(){
                     Text(text = "Change your password", fontSize = 16.sp, fontFamily = manrope, fontWeight = FontWeight.SemiBold, color = Color.Black, modifier = Modifier.padding())
                     Column(modifier = Modifier.padding(top = 30.dp)){
 
-                        var password by rememberSaveable { mutableStateOf("") }
+
                         OutlinedTextField(
                             shape = MaterialTheme.shapes.small.copy(CornerSize(15.dp)),
                             value = password,
@@ -499,6 +501,7 @@ fun SettingActiv(){
                     Button(onClick = {
                         openDialogChangePassword.value = false
                         openDialogChangePasswordToken.value = true
+                        var rqst:RetrofitRequest = RetrofitRequest()
                     },
 
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color.White, contentColor = Color.Black),
